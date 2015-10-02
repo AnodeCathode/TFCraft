@@ -397,7 +397,17 @@ public class TFC_OreDictionary
 		OreDictionary.registerOre("materialCloth", new ItemStack(TFCItems.silkCloth));
 		OreDictionary.registerOre("materialWool", new ItemStack(TFCItems.wool, 1, WILD));
 
-		// Tools are also registered with their material to help prevent issues with unification.
+		//Stone tool parts for quests, etc.
+		OreDictionary.registerOre("itemAxeStoneHead", new ItemStack(TFCItems.igExStoneAxeHead, 1, WILD));
+		OreDictionary.registerOre("itemAxeStoneHead", new ItemStack(TFCItems.igInStoneAxeHead, 1, WILD));
+		OreDictionary.registerOre("itemAxeStoneHead", new ItemStack(TFCItems.mMStoneAxeHead, 1, WILD));
+		OreDictionary.registerOre("itemAxeStoneHead", new ItemStack(TFCItems.sedStoneAxeHead, 1, WILD));
+		OreDictionary.registerOre("itemJavelinStone", new ItemStack(TFCItems.igExStoneJavelin, 1, WILD));
+		OreDictionary.registerOre("itemJavelinStone", new ItemStack(TFCItems.igInStoneJavelin, 1, WILD));
+		OreDictionary.registerOre("itemJavelinStone", new ItemStack(TFCItems.mMStoneJavelin, 1, WILD));
+		OreDictionary.registerOre("itemJavelinStone", new ItemStack(TFCItems.sedStoneJavelin, 1, WILD));
+		
+		// Tools are also registered with their material to help prevent issues with unification.		
 		for (Item axe : Recipes.axes)
 			OreDictionary.registerOre("itemAxe", new ItemStack(axe, 1, WILD));
 
