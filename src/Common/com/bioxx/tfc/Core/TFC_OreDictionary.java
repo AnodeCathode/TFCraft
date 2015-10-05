@@ -166,6 +166,11 @@ public class TFC_OreDictionary
 		OreDictionary.registerOre("ingotBlueSteel", new ItemStack(TFCItems.blueSteelIngot));
 		OreDictionary.registerOre("ingotUnknown", new ItemStack(TFCItems.unknownIngot));
 
+		//Bronze Double Ingots
+		OreDictionary.registerOre("ingotDoubleAnyBronze", new ItemStack(TFCItems.bronzeIngot2x));
+		OreDictionary.registerOre("ingotDoubleAnyBronze", new ItemStack(TFCItems.bismuthBronzeIngot2x));
+		OreDictionary.registerOre("ingotDoubleAnyBronze", new ItemStack(TFCItems.blackBronzeIngot2x));
+
 		//Double Ingots
 		OreDictionary.registerOre("ingotDoubleBismuth", new ItemStack(TFCItems.bismuthIngot2x));
 		OreDictionary.registerOre("ingotDoubleTin", new ItemStack(TFCItems.tinIngot2x));
@@ -238,6 +243,11 @@ public class TFC_OreDictionary
 		OreDictionary.registerOre("plateDoubleAnyBronze", new ItemStack(TFCItems.bronzeSheet2x));
 		OreDictionary.registerOre("plateDoubleAnyBronze", new ItemStack(TFCItems.bismuthBronzeSheet2x));
 		OreDictionary.registerOre("plateDoubleAnyBronze", new ItemStack(TFCItems.blackBronzeSheet2x));
+
+		//Anvils
+		OreDictionary.registerOre("anvilTier3", new ItemStack(TFCBlocks.anvil, 1, 2));
+		OreDictionary.registerOre("anvilTier3", new ItemStack(TFCBlocks.anvil2, 1, 1));
+		OreDictionary.registerOre("anvilTier3", new ItemStack(TFCBlocks.anvil2, 1, 2));
 
 		//Gems
 		OreDictionary.registerOre("gemChippedAgate", new ItemStack(TFCItems.gemAgate));
@@ -402,6 +412,10 @@ public class TFC_OreDictionary
 		OreDictionary.registerOre("itemAxeStoneHead", new ItemStack(TFCItems.igInStoneAxeHead, 1, WILD));
 		OreDictionary.registerOre("itemAxeStoneHead", new ItemStack(TFCItems.mMStoneAxeHead, 1, WILD));
 		OreDictionary.registerOre("itemAxeStoneHead", new ItemStack(TFCItems.sedStoneAxeHead, 1, WILD));
+		OreDictionary.registerOre("itemHoeStone", new ItemStack(TFCItems.igExHoe, 1, WILD));
+		OreDictionary.registerOre("itemHoeStone", new ItemStack(TFCItems.igInHoe, 1, WILD));
+		OreDictionary.registerOre("itemHoeStone", new ItemStack(TFCItems.mMHoe, 1, WILD));
+		OreDictionary.registerOre("itemHoeStone", new ItemStack(TFCItems.sedHoe, 1, WILD));
 		OreDictionary.registerOre("itemJavelinStone", new ItemStack(TFCItems.igExStoneJavelin, 1, WILD));
 		OreDictionary.registerOre("itemJavelinStone", new ItemStack(TFCItems.igInStoneJavelin, 1, WILD));
 		OreDictionary.registerOre("itemJavelinStone", new ItemStack(TFCItems.mMStoneJavelin, 1, WILD));
