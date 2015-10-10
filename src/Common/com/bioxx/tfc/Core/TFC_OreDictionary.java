@@ -619,6 +619,10 @@ public class TFC_OreDictionary
 		for (Item javelin : Recipes.javelins)
 			OreDictionary.registerOre("itemJavelin", new ItemStack(javelin, 1, WILD));
 
+		OreDictionary.registerOre("itemJavelinStoneSed", new ItemStack(TFCItems.sedStoneJavelin, 1, WILD));
+		OreDictionary.registerOre("itemJavelinStoneIgIn", new ItemStack(TFCItems.igInStoneJavelin, 1, WILD));
+		OreDictionary.registerOre("itemJavelinStoneIgEx", new ItemStack(TFCItems.igExStoneJavelin, 1, WILD));
+		OreDictionary.registerOre("itemJavelinStoneMM", new ItemStack(TFCItems.mMStoneJavelin, 1, WILD));
 		OreDictionary.registerOre("itemJavelinBismuthBronze", new ItemStack(TFCItems.bismuthBronzeJavelin, 1, WILD));
 		OreDictionary.registerOre("itemJavelinBlackBronze", new ItemStack(TFCItems.blackBronzeJavelin, 1, WILD));
 		OreDictionary.registerOre("itemJavelinBlackSteel", new ItemStack(TFCItems.blackSteelJavelin, 1, WILD));
