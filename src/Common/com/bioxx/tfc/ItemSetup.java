@@ -227,7 +227,7 @@ public class ItemSetup extends TFCItems {
 		bronzeSword = new ItemCustomSword(bronzeToolMaterial,				220).setUnlocalizedName("Bronze Sword").setMaxDamage(bronzeUses);
 		copperSword = new ItemCustomSword(copperToolMaterial, 				165).setUnlocalizedName("Copper Sword").setMaxDamage(copperUses);
 		wroughtIronSword = new ItemCustomSword(ironToolMaterial,			240).setUnlocalizedName("Wrought Iron Sword").setMaxDamage(wroughtIronUses);
-		redSteelSword = new ItemCustomSword(redSteelToolMaterial,			305).setUnlocalizedName("Red Steel Sword").setMaxDamage(redSteelUses);
+		redSteelSword = new ItemCustomSword(redSteelToolMaterial,			315).setUnlocalizedName("Red Steel Sword").setMaxDamage(redSteelUses);
 		steelSword = new ItemCustomSword(steelToolMaterial,					265).setUnlocalizedName("Steel Sword").setMaxDamage(steelUses);
 
 		bismuthBronzeMace = new ItemCustomSword(bismuthBronzeToolMaterial,  210,EnumDamageType.CRUSHING).setUnlocalizedName("Bismuth Bronze Mace").setMaxDamage(bismuthBronzeUses);
@@ -237,7 +237,7 @@ public class ItemSetup extends TFCItems {
 		bronzeMace = new ItemCustomSword(bronzeToolMaterial, 				220,EnumDamageType.CRUSHING).setUnlocalizedName("Bronze Mace").setMaxDamage(bronzeUses);
 		copperMace = new ItemCustomSword(copperToolMaterial, 				165,EnumDamageType.CRUSHING).setUnlocalizedName("Copper Mace").setMaxDamage(copperUses);
 		wroughtIronMace = new ItemCustomSword(ironToolMaterial, 			240,EnumDamageType.CRUSHING).setUnlocalizedName("Wrought Iron Mace").setMaxDamage(wroughtIronUses);
-		redSteelMace = new ItemCustomSword(redSteelToolMaterial, 			305,EnumDamageType.CRUSHING).setUnlocalizedName("Red Steel Mace").setMaxDamage(redSteelUses);
+		redSteelMace = new ItemCustomSword(redSteelToolMaterial, 			315,EnumDamageType.CRUSHING).setUnlocalizedName("Red Steel Mace").setMaxDamage(redSteelUses);
 		steelMace = new ItemCustomSword(steelToolMaterial, 					265,EnumDamageType.CRUSHING).setUnlocalizedName("Steel Mace").setMaxDamage(steelUses);
 
 		bismuthBronzeSaw = new ItemCustomSaw(bismuthBronzeToolMaterial).setUnlocalizedName("Bismuth Bronze Saw").setMaxDamage(bismuthBronzeUses);
@@ -679,9 +679,39 @@ public class ItemSetup extends TFCItems {
 				blackSteelHammer,blueSteelHammer,bronzeHammer,copperHammer,
 				wroughtIronHammer,redSteelHammer,steelHammer};
 
+		Recipes.picks = new Item[]{bismuthBronzePick,blackBronzePick,
+				blackSteelPick,blueSteelPick,bronzePick,copperPick,
+				wroughtIronPick,redSteelPick,steelPick};
+
+		Recipes.proPicks = new Item[]{proPickBismuthBronze,proPickBlackBronze,
+				proPickBlackSteel,proPickBlueSteel,proPickBronze,proPickCopper,
+				proPickIron,proPickRedSteel,proPickSteel};
+
+		Recipes.shovels = new Item[]{sedShovel,igInShovel,igExShovel,mMShovel,
+				bismuthBronzeShovel,blackBronzeShovel,
+				blackSteelShovel,blueSteelShovel,bronzeShovel,copperShovel,
+				wroughtIronShovel,redSteelShovel,steelShovel};
+
+		Recipes.hoes = new Item[]{sedHoe,igInHoe,igExHoe,mMHoe,
+				bismuthBronzeHoe,blackBronzeHoe,
+				blackSteelHoe,blueSteelHoe,bronzeHoe,copperHoe,
+				wroughtIronHoe,redSteelHoe,steelHoe};
+
 		Recipes.scythes = new Item[]{bismuthBronzeScythe,blackBronzeScythe,
 				blackSteelScythe,blueSteelScythe,bronzeScythe,copperScythe,
 				wroughtIronScythe,redSteelScythe,steelScythe};
+
+		Recipes.swords = new Item[]{bismuthBronzeSword,blackBronzeSword,
+				blackSteelSword,blueSteelSword,bronzeSword,copperSword,
+				wroughtIronSword,redSteelSword,steelSword};
+
+		Recipes.maces = new Item[]{bismuthBronzeMace,blackBronzeMace,
+				blackSteelMace,blueSteelMace,bronzeMace,copperMace,
+				wroughtIronMace,redSteelMace,steelMace};
+
+		Recipes.javelins = new Item[]{bismuthBronzeJavelin,blackBronzeJavelin,
+				blackSteelJavelin,blueSteelJavelin,bronzeJavelin,copperJavelin,
+				wroughtIronJavelin,redSteelJavelin,steelJavelin};
 
 		Recipes.spindle = new Item[]{spindle};
 
