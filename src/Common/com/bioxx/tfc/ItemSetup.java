@@ -709,7 +709,7 @@ public class ItemSetup extends TFCItems {
 				blackSteelMace,blueSteelMace,bronzeMace,copperMace,
 				wroughtIronMace,redSteelMace,steelMace};
 
-		Recipes.javelins = new Item[]{bismuthBronzeJavelin,blackBronzeJavelin,
+		Recipes.javelins = new Item[]{sedStoneJavelin,igInStoneJavelin,igExStoneJavelin,mMStoneJavelin,bismuthBronzeJavelin,blackBronzeJavelin,
 				blackSteelJavelin,blueSteelJavelin,bronzeJavelin,copperJavelin,
 				wroughtIronJavelin,redSteelJavelin,steelJavelin};
 
