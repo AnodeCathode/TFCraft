@@ -1,12 +1,15 @@
 package com.bioxx.tfc.Items.Tools;
 
+import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -61,11 +64,6 @@ public class ItemHammer extends ItemTerraTool implements ICausesDamage
 		return false;
 	}
 
-	public boolean onBlockDestroyed(ItemStack stack, EntityPlayer player, World world, int i, int j, int k, int side, EntityLiving entity)
-	{
-		return false;
-	}
-
 	@Override
 	public EnumSize getSize(ItemStack is)
 	{
@@ -102,4 +100,46 @@ public class ItemHammer extends ItemTerraTool implements ICausesDamage
 	{
 		return EnumItemReach.MEDIUM;
 	}
+	
+    @Override
+	public boolean canHarvestBlock(Block block, ItemStack itemStack)
+    {
+        return checkBlock(block);
+    }
+	
+    public boolean onBlockStartBreak(final ItemStack itemstack, final int x, final int y, final int z, final EntityPlayer player) {
+        if (this.checkBlock(player.worldObj.getBlock(x, y, z)))
+        {
+	        if (this.checkNeighbours(player.worldObj, x, y, z) || player.capabilities.isCreativeMode) {
+	            return false;
+        }
+	       player.worldObj.markBlockForUpdate(x, y, z);
+           return true;
+        }
+        return false;
+
+    }
+    @Override
+    public float getDigSpeed(final ItemStack stack, final Block block, final int meta) {
+        float digSpeed = super.getDigSpeed(stack, block, meta);
+        if (this.checkBlock(block)) {
+            digSpeed += stack.getMaxDamage() / 2;
+        }
+        return digSpeed;
+    }
+    
+	private boolean checkNeighbours(final World world, final int x, final int y, final int z) {
+        return world.getBlock(x, y, z).getUnlocalizedName().toLowerCase().contains("glass") || 
+        		(this.checkBlock(world.getBlock(x + 1, y, z)) && 
+				this.checkBlock(world.getBlock(x - 1, y, z)) && 
+				this.checkBlock(world.getBlock(x, y + 1, z)) && 
+				this.checkBlock(world.getBlock(x, y - 1, z)) && 
+				this.checkBlock(world.getBlock(x, y, z + 1)) && 
+				this.checkBlock(world.getBlock(x, y, z - 1)));
+	}
+    
+    private boolean checkBlock(final Block block) {
+        final String checkBlockName = block.getUnlocalizedName().toLowerCase();
+        return checkBlockName.contains("brick") || checkBlockName.contains("smooth") || checkBlockName.contains("glass") || block.getMaterial() == Material.air;
+    }
 }
