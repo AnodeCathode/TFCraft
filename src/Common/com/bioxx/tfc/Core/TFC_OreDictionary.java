@@ -44,6 +44,14 @@ public class TFC_OreDictionary
 		OreDictionary.registerOre("chestWood", new ItemStack(TFCBlocks.chest, 1, WILD));
 		OreDictionary.registerOre("barrelWood", new ItemStack(TFCBlocks.barrel, 1, WILD));
 
+		OreDictionary.registerOre("fenceGate", new ItemStack(Blocks.fence_gate, 1, WILD));
+		OreDictionary.registerOre("fenceGate", new ItemStack(TFCBlocks.fenceGate, 1, WILD));
+		OreDictionary.registerOre("fenceGate", new ItemStack(TFCBlocks.fenceGate2, 1, WILD));
+
+		OreDictionary.registerOre("fenceWood", new ItemStack(Blocks.fence, 1, WILD));
+		OreDictionary.registerOre("fenceWood", new ItemStack(TFCBlocks.fence, 1, WILD));
+		OreDictionary.registerOre("fenceWood", new ItemStack(TFCBlocks.fence2, 1, WILD));
+
 		//Ores
 		OreDictionary.registerOre("oreNormalCopper", new ItemStack(TFCItems.oreChunk, 1, 0)); //Native Copper
 		OreDictionary.registerOre("oreNormalCopper", new ItemStack(TFCItems.oreChunk, 1, 9)); //Malachite
@@ -363,6 +371,9 @@ public class TFC_OreDictionary
 		OreDictionary.registerOre("stoneCobble", new ItemStack(TFCBlocks.stoneIgInCobble, 1, WILD));
 		OreDictionary.registerOre("stoneCobble", new ItemStack(TFCBlocks.stoneMMCobble, 1, WILD));
 		OreDictionary.registerOre("stoneCobble", new ItemStack(TFCBlocks.stoneSedCobble, 1, WILD));
+
+		//Stone Brick Items
+		OreDictionary.registerOre("ingotStoneBrick", new ItemStack(TFCItems.stoneBrick, 1, WILD));
 
 		//Stone Bricks
 		OreDictionary.registerOre("stoneBricks", new ItemStack(Blocks.stonebrick));
