@@ -15,6 +15,7 @@ import com.bioxx.tfc.Core.TFC_Achievements;
 import com.bioxx.tfc.Core.TFC_Core;
 import com.bioxx.tfc.TileEntities.TEAnvil;
 import com.bioxx.tfc.api.TFCBlocks;
+import com.bioxx.tfc.api.TFCOptions;
 import com.bioxx.tfc.api.Crafting.AnvilManager;
 import com.bioxx.tfc.api.Enums.EnumDamageType;
 import com.bioxx.tfc.api.Enums.EnumItemReach;
@@ -126,7 +127,7 @@ public class ItemHammer extends ItemTerraTool implements ICausesDamage
     public float getDigSpeed(ItemStack stack,  Block block,  int meta) {
         float digSpeed = 1.0F;
         if (checkBlock(block)) {
-            digSpeed += stack.getMaxDamage() / 90;
+            digSpeed += stack.getMaxDamage() / TFCOptions.hammerBreakSpeed;
         }
         return digSpeed + (digSpeed * AnvilManager.getDurabilityBuff(stack));
     }
