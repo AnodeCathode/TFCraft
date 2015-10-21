@@ -1,9 +1,10 @@
 package com.bioxx.tfc.Items.Tools;
 
+
 import java.util.Set;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,8 +12,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import com.bioxx.tfc.Core.TFC_Achievements;
+import com.bioxx.tfc.Core.TFC_Core;
 import com.bioxx.tfc.TileEntities.TEAnvil;
 import com.bioxx.tfc.api.TFCBlocks;
+import com.bioxx.tfc.api.TFCOptions;
 import com.bioxx.tfc.api.Crafting.AnvilManager;
 import com.bioxx.tfc.api.Enums.EnumDamageType;
 import com.bioxx.tfc.api.Enums.EnumItemReach;
@@ -61,11 +64,6 @@ public class ItemHammer extends ItemTerraTool implements ICausesDamage
 		return false;
 	}
 
-	public boolean onBlockDestroyed(ItemStack stack, EntityPlayer player, World world, int i, int j, int k, int side, EntityLiving entity)
-	{
-		return false;
-	}
-
 	@Override
 	public EnumSize getSize(ItemStack is)
 	{
@@ -102,4 +100,50 @@ public class ItemHammer extends ItemTerraTool implements ICausesDamage
 	{
 		return EnumItemReach.MEDIUM;
 	}
+
+	@Override
+  	public boolean canHarvestBlock(Block block, ItemStack itemStack)
+  	{
+	  return checkBlock(block);
+  	}
+    
+    @Override
+    public boolean onBlockStartBreak(ItemStack itemstack,  int x,  int y,  int z,  EntityPlayer player) {
+        if (this.checkBlock(player.worldObj.getBlock(x, y, z)))
+        {
+	        if (this.checkNeighbours(player.worldObj, x, y, z) || player.capabilities.isCreativeMode) {
+	            return false;
+	        }
+	        else {
+	        	itemstack.damageItem( (int) itemstack.getMaxDamage()/ 25 + 100, player);
+	        	TFC_Core.addPlayerExhaustion(player, 0.05f);
+	        }
+
+        }
+        return false;
+
+    }
+    @Override
+    public float getDigSpeed(ItemStack stack,  Block block,  int meta) {
+        float digSpeed = 1.0F;
+        if (checkBlock(block)) {
+            digSpeed += stack.getMaxDamage() / TFCOptions.hammerBreakSpeed;
+        }
+        return digSpeed + (digSpeed * AnvilManager.getDurabilityBuff(stack));
+    }
+    
+	private boolean checkNeighbours(World world,  int x,  int y,  int z) {
+        return world.getBlock(x, y, z).getUnlocalizedName().toLowerCase().contains("glass") || 
+        		(checkBlock(world.getBlock(x + 1, y, z)) && 
+				checkBlock(world.getBlock(x - 1, y, z)) && 
+				checkBlock(world.getBlock(x, y + 1, z)) && 
+				checkBlock(world.getBlock(x, y - 1, z)) && 
+				checkBlock(world.getBlock(x, y, z + 1)) && 
+				checkBlock(world.getBlock(x, y, z - 1)));
+	}
+    
+    private boolean checkBlock(Block block) {
+         String checkBlockName = block.getUnlocalizedName().toLowerCase();
+        return checkBlockName.contains("brick") || checkBlockName.contains("smooth") || checkBlockName.contains("glass") || block.getMaterial() == Material.air;
+    }
 }
