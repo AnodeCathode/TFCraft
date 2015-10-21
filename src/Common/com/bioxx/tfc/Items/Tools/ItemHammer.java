@@ -114,7 +114,7 @@ public class ItemHammer extends ItemTerraTool implements ICausesDamage
 	            return false;
 	        }
 	        else {
-	        	itemstack.damageItem( (int) itemstack.getMaxDamage() / 25, player);
+	        	itemstack.damageItem( (int) itemstack.getMaxDamage()/ 25 + 100, player);
 	        	TFC_Core.addPlayerExhaustion(player, 0.05f);
 	        }
 
@@ -124,11 +124,11 @@ public class ItemHammer extends ItemTerraTool implements ICausesDamage
     }
     @Override
     public float getDigSpeed(ItemStack stack,  Block block,  int meta) {
-        float digSpeed = super.getDigSpeed(stack, block, meta);
+        float digSpeed = 1.0F;
         if (checkBlock(block)) {
-            digSpeed += stack.getMaxDamage() / 25;
+            digSpeed += stack.getMaxDamage() / 90;
         }
-        return digSpeed;
+        return digSpeed + (digSpeed * AnvilManager.getDurabilityBuff(stack));
     }
     
 	private boolean checkNeighbours(World world,  int x,  int y,  int z) {
