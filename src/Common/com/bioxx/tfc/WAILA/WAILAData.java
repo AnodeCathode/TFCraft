@@ -32,7 +32,6 @@ import com.bioxx.tfc.Food.*;
 import com.bioxx.tfc.Items.ItemCoal;
 import com.bioxx.tfc.Items.ItemGem;
 import com.bioxx.tfc.Items.ItemOre;
-import com.bioxx.tfc.Items.ItemOreSmall;
 import com.bioxx.tfc.TileEntities.*;
 import com.bioxx.tfc.api.*;
 import com.bioxx.tfc.api.Constant.Global;
@@ -983,7 +982,7 @@ public class WAILAData implements IWailaDataProvider
 				currenttip.add(TFC_Core.translate("gui.metal.Gold"));
 				break;
 			case 2:
-				currenttip.add(TFC_Core.translate("gui.metal.Platinum"));
+				currenttip.add(TFC_Core.translate("gui.ore.Platinum"));
 				break;
 			case 3:
 			case 10:
@@ -997,7 +996,7 @@ public class WAILAData implements IWailaDataProvider
 				currenttip.add(TFC_Core.translate("gui.metal.Tin"));
 				break;
 			case 6:
-				currenttip.add(TFC_Core.translate("gui.metal.Lead"));
+				currenttip.add(TFC_Core.translate("gui.ore.Lead"));
 				break;
 			case 7:
 				currenttip.add(TFC_Core.translate("gui.metal.Bismuth"));
@@ -1031,6 +1030,8 @@ public class WAILAData implements IWailaDataProvider
 			switch (meta)
 			{
 			case 1:
+				currenttip.add(TFC_Core.translate("gui.ore.gypsum"));
+				break;
 			case 2:
 				currenttip.add(TFC_Core.translate("gui.ore.satinspar"));
 				break;
@@ -1072,7 +1073,7 @@ public class WAILAData implements IWailaDataProvider
 				currenttip.add(TFC_Core.translate("item.Powder.Flux.name"));
 				break;
 			case 1:
-				currenttip.add(TFC_Core.translate("gui.useless"));
+				currenttip.add(TFC_Core.translate("gui.ore.olivine"));
 				break;
 			}
 		}
