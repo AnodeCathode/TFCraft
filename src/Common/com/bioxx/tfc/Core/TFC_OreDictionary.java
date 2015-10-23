@@ -635,6 +635,19 @@ public class TFC_OreDictionary
 		OreDictionary.registerOre("itemJavelinRedSteel", new ItemStack(TFCItems.redSteelJavelin, 1, WILD));
 		OreDictionary.registerOre("itemJavelinSteel", new ItemStack(TFCItems.steelJavelin, 1, WILD));
 
+		for (Item tuyere : Recipes.tuyeres)
+			OreDictionary.registerOre("itemTuyere", new ItemStack(tuyere, 1, WILD));
+
+		OreDictionary.registerOre("itemTuyereBismuthBronze", new ItemStack(TFCItems.tuyereBismuthBronze, 1, WILD));
+		OreDictionary.registerOre("itemTuyereBlackBronze", new ItemStack(TFCItems.tuyereBlackBronze, 1, WILD));
+		OreDictionary.registerOre("itemTuyereBlackSteel", new ItemStack(TFCItems.tuyereBlackSteel, 1, WILD));
+		OreDictionary.registerOre("itemTuyereBlueSteel", new ItemStack(TFCItems.tuyereBlueSteel, 1, WILD));
+		OreDictionary.registerOre("itemTuyereBronze", new ItemStack(TFCItems.tuyereBronze, 1, WILD));
+		OreDictionary.registerOre("itemTuyereCopper", new ItemStack(TFCItems.tuyereCopper, 1, WILD));
+		OreDictionary.registerOre("itemTuyereWroughtIron", new ItemStack(TFCItems.tuyereWroughtIron, 1, WILD));
+		OreDictionary.registerOre("itemTuyereRedSteel", new ItemStack(TFCItems.tuyereRedSteel, 1, WILD));
+		OreDictionary.registerOre("itemTuyereSteel", new ItemStack(TFCItems.tuyereSteel, 1, WILD));
+
 		//Miscellaneous Items
 		OreDictionary.registerOre("lumpClay", new ItemStack(Items.clay_ball));
 		OreDictionary.registerOre("lumpClay", new ItemStack(TFCItems.clayBall, 1, 0));
