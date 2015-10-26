@@ -647,9 +647,9 @@ public class TEBarrel extends NetworkTileEntity implements IInventory
 				}
 			}
 
-			//If lightning can strike here then it means that the barrel can see the sky, so rain can hit it. If true then we fill
-			//the barrel when its raining.
-			if(!this.getSealed() &&  WeatherManager.isRainingOnCoord(this.worldObj, xCoord, yCoord, zCoord))
+			//Check the general isRaining function. Supports weather2 localized rainstorms.
+			//Fill the barrel when its raining.
+			if(!this.getSealed() &&  WeatherManager.isRainingOnCoord(this.worldObj, xCoord, yCoord + 1, zCoord))
 			{
 				int count = getInvCount();	
 				if (count == 0 || count == 1 && this.getInputStack() != null)
