@@ -158,6 +158,9 @@ public class TFC_OreDictionary
 		OreDictionary.registerOre("ingotTin", new ItemStack(TFCItems.tinIngot));
 		OreDictionary.registerOre("ingotZinc", new ItemStack(TFCItems.zincIngot));
 		OreDictionary.registerOre("ingotCopper", new ItemStack(TFCItems.copperIngot));
+		OreDictionary.registerOre("ingotAnyBronze", new ItemStack(TFCItems.bronzeIngot));
+		OreDictionary.registerOre("ingotAnyBronze", new ItemStack(TFCItems.bismuthBronzeIngot));
+		OreDictionary.registerOre("ingotAnyBronze", new ItemStack(TFCItems.blackBronzeIngot));
 		OreDictionary.registerOre("ingotBronze", new ItemStack(TFCItems.bronzeIngot));
 		OreDictionary.registerOre("ingotBismuthBronze", new ItemStack(TFCItems.bismuthBronzeIngot));
 		OreDictionary.registerOre("ingotBlackBronze", new ItemStack(TFCItems.blackBronzeIngot));
@@ -178,15 +181,14 @@ public class TFC_OreDictionary
 		OreDictionary.registerOre("ingotBlueSteel", new ItemStack(TFCItems.blueSteelIngot));
 		OreDictionary.registerOre("ingotUnknown", new ItemStack(TFCItems.unknownIngot));
 
-		OreDictionary.registerOre("ingotAnyBronze", new ItemStack(TFCItems.bronzeIngot));
-		OreDictionary.registerOre("ingotAnyBronze", new ItemStack(TFCItems.bismuthBronzeIngot));
-		OreDictionary.registerOre("ingotAnyBronze", new ItemStack(TFCItems.blackBronzeIngot));
-
 		//Double Ingots
 		OreDictionary.registerOre("ingotDoubleBismuth", new ItemStack(TFCItems.bismuthIngot2x));
 		OreDictionary.registerOre("ingotDoubleTin", new ItemStack(TFCItems.tinIngot2x));
 		OreDictionary.registerOre("ingotDoubleZinc", new ItemStack(TFCItems.zincIngot2x));
 		OreDictionary.registerOre("ingotDoubleCopper", new ItemStack(TFCItems.copperIngot2x));
+		OreDictionary.registerOre("ingotDoubleAnyBronze", new ItemStack(TFCItems.bronzeIngot2x));
+		OreDictionary.registerOre("ingotDoubleAnyBronze", new ItemStack(TFCItems.bismuthBronzeIngot2x));
+		OreDictionary.registerOre("ingotDoubleAnyBronze", new ItemStack(TFCItems.blackBronzeIngot2x));
 		OreDictionary.registerOre("ingotDoubleBronze", new ItemStack(TFCItems.bronzeIngot2x));
 		OreDictionary.registerOre("ingotDoubleBismuthBronze", new ItemStack(TFCItems.bismuthBronzeIngot2x));
 		OreDictionary.registerOre("ingotDoubleBlackBronze", new ItemStack(TFCItems.blackBronzeIngot2x));
@@ -205,15 +207,14 @@ public class TFC_OreDictionary
 		OreDictionary.registerOre("ingotDoubleRedSteel", new ItemStack(TFCItems.redSteelIngot2x));
 		OreDictionary.registerOre("ingotDoubleBlueSteel", new ItemStack(TFCItems.blueSteelIngot2x));
 
-		OreDictionary.registerOre("ingotDoubleAnyBronze", new ItemStack(TFCItems.bronzeIngot2x));
-		OreDictionary.registerOre("ingotDoubleAnyBronze", new ItemStack(TFCItems.bismuthBronzeIngot2x));
-		OreDictionary.registerOre("ingotDoubleAnyBronze", new ItemStack(TFCItems.blackBronzeIngot2x));
-
 		//Sheets
 		OreDictionary.registerOre("plateBismuth", new ItemStack(TFCItems.bismuthSheet));
 		OreDictionary.registerOre("plateTin", new ItemStack(TFCItems.tinSheet));
 		OreDictionary.registerOre("plateZinc", new ItemStack(TFCItems.zincSheet));
 		OreDictionary.registerOre("plateCopper", new ItemStack(TFCItems.copperSheet));
+		OreDictionary.registerOre("plateAnyBronze", new ItemStack(TFCItems.bronzeSheet));
+		OreDictionary.registerOre("plateAnyBronze", new ItemStack(TFCItems.bismuthBronzeSheet));
+		OreDictionary.registerOre("plateAnyBronze", new ItemStack(TFCItems.blackBronzeSheet));
 		OreDictionary.registerOre("plateBronze", new ItemStack(TFCItems.bronzeSheet));
 		OreDictionary.registerOre("plateBismuthBronze", new ItemStack(TFCItems.bismuthBronzeSheet));
 		OreDictionary.registerOre("plateBlackBronze", new ItemStack(TFCItems.blackBronzeSheet));
@@ -233,15 +234,14 @@ public class TFC_OreDictionary
 		OreDictionary.registerOre("plateRedSteel", new ItemStack(TFCItems.redSteelSheet));
 		OreDictionary.registerOre("plateBlueSteel", new ItemStack(TFCItems.blueSteelSheet));
 
-		OreDictionary.registerOre("plateAnyBronze", new ItemStack(TFCItems.bronzeSheet));
-		OreDictionary.registerOre("plateAnyBronze", new ItemStack(TFCItems.bismuthBronzeSheet));
-		OreDictionary.registerOre("plateAnyBronze", new ItemStack(TFCItems.blackBronzeSheet));
-
 		//Double Sheets
 		OreDictionary.registerOre("plateDoubleBismuth", new ItemStack(TFCItems.bismuthSheet2x));
 		OreDictionary.registerOre("plateDoubleTin", new ItemStack(TFCItems.tinSheet2x));
 		OreDictionary.registerOre("plateDoubleZinc", new ItemStack(TFCItems.zincSheet2x));
 		OreDictionary.registerOre("plateDoubleCopper", new ItemStack(TFCItems.copperSheet2x));
+		OreDictionary.registerOre("plateDoubleAnyBronze", new ItemStack(TFCItems.bronzeSheet2x));
+		OreDictionary.registerOre("plateDoubleAnyBronze", new ItemStack(TFCItems.bismuthBronzeSheet2x));
+		OreDictionary.registerOre("plateDoubleAnyBronze", new ItemStack(TFCItems.blackBronzeSheet2x));
 		OreDictionary.registerOre("plateDoubleBronze", new ItemStack(TFCItems.bronzeSheet2x));
 		OreDictionary.registerOre("plateDoubleBismuthBronze", new ItemStack(TFCItems.bismuthBronzeSheet2x));
 		OreDictionary.registerOre("plateDoubleBlackBronze", new ItemStack(TFCItems.blackBronzeSheet2x));
@@ -259,10 +259,6 @@ public class TFC_OreDictionary
 		OreDictionary.registerOre("plateDoubleBlackSteel", new ItemStack(TFCItems.blackSteelSheet2x));
 		OreDictionary.registerOre("plateDoubleRedSteel", new ItemStack(TFCItems.redSteelSheet2x));
 		OreDictionary.registerOre("plateDoubleBlueSteel", new ItemStack(TFCItems.blueSteelSheet2x));
-
-		OreDictionary.registerOre("plateDoubleAnyBronze", new ItemStack(TFCItems.bronzeSheet2x));
-		OreDictionary.registerOre("plateDoubleAnyBronze", new ItemStack(TFCItems.bismuthBronzeSheet2x));
-		OreDictionary.registerOre("plateDoubleAnyBronze", new ItemStack(TFCItems.blackBronzeSheet2x));
 
 		//Gems
 		OreDictionary.registerOre("gemChippedAgate", new ItemStack(TFCItems.gemAgate));
