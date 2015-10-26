@@ -26,7 +26,7 @@ public class Weather2 implements IWeather2
 		int dim = worldObj.provider.dimensionId;
 		WeatherManagerServer wms = ServerTickHandler.lookupDimToWeatherMan.get(dim);
 	
-		StormObject storm = wms.getClosestStorm(Vec3.createVectorHelper(xCoord, StormObject.layers.get(0), zCoord), 64, -1, true);
+		StormObject storm = wms.getClosestStorm(Vec3.createVectorHelper(xCoord, StormObject.layers.get(0), zCoord), 128, -1, true);
 		if (storm !=null) 
 		{
 			return true;
