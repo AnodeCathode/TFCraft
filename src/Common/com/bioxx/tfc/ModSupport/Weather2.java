@@ -1,5 +1,7 @@
 package com.bioxx.tfc.ModSupport;
 
+import java.util.List;
+
 import cpw.mods.fml.common.Optional.Method;
 import weather2.ServerTickHandler;
 import weather2.weathersystem.WeatherManagerServer;
@@ -23,15 +25,20 @@ public class Weather2 implements IWeather2
 		int dim = worldObj.provider.dimensionId;
 		WeatherManagerServer wms = ServerTickHandler.lookupDimToWeatherMan.get(dim);
 		Vec3 startVec3 = Vec3.createVectorHelper(xCoord, yCoord, zCoord);
-		StormObject storm = wms.getClosestStorm(startVec3, 300, -1, true);
 		
-		if (storm !=null && storm.levelWater > storm.levelWaterStartRaining) 
-		{
-			double radius = (double) storm.size / 2;
-			Vec3 location = storm.pos;
-			if (startVec3.distanceTo(location) < radius)
+		List<StormObject> storms =  wms.getStormsAround(startVec3, 150);
+
+		for (int i = 0; i < storms.size(); i++) {
+			StormObject storm = storms.get(i);
+			
+			if (storm != null && storm.isPrecipitating()) 
 			{
-				return true;				
+				double radius = (double) storm.size / 2;
+				Vec3 location = storm.pos;
+				if (startVec3.distanceTo(location) < radius)
+				{
+					return true;				
+				}	
 			}
 		}
 		return false;	
