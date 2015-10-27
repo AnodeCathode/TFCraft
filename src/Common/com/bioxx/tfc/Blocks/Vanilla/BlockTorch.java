@@ -16,7 +16,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -26,6 +25,7 @@ import com.bioxx.tfc.Blocks.BlockTerraContainer;
 import com.bioxx.tfc.Core.TFCTabs;
 import com.bioxx.tfc.Core.TFC_Core;
 import com.bioxx.tfc.Core.TFC_Time;
+import com.bioxx.tfc.Core.WeatherManager;
 import com.bioxx.tfc.TileEntities.TELightEmitter;
 import com.bioxx.tfc.api.TFCBlocks;
 import com.bioxx.tfc.api.TFCItems;
@@ -252,7 +252,7 @@ public class BlockTorch extends BlockTerraContainer
 		{
 			TELightEmitter te = (TELightEmitter) world.getTileEntity(x, y, z);
 			if (TFC_Time.getTotalHours() > te.hourPlaced + TFCOptions.torchBurnTime ||
-					world.isRaining() && world.canBlockSeeTheSky(x, y, z))
+					WeatherManager.isRainingOnCoord(world, x, y, z))
 			{
 				world.setBlock(x, y, z, TFCBlocks.torchOff, meta, 3);
 			}
