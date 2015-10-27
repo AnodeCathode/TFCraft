@@ -154,6 +154,6 @@ public class ItemHammer extends ItemTerraTool implements ICausesDamage
         return block instanceof BlockSmooth || checkBlockName.contains("brick") || checkBlockName.contains("smooth") || checkBlockName.contains("glass");
     }
     private boolean checkNeighbourBlock(Block block) {
-    	return block instanceof BlockStone || block instanceof BlockOre || block instanceof BlockCobble || block instanceof BlockGravel || block instanceof BlockDirt || block instanceof BlockSand;
-    }
+    	return block instanceof BlockStone || block instanceof BlockOre;
+	}
 }
