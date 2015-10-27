@@ -183,8 +183,11 @@ public class FoodStatsTFC
 					if(waterLevel < 0)
 						waterLevel = 0;
 					if(!TFC_Core.isPlayerInDebugMode(player) && waterLevel == 0 && temp > 35)
+					{
 						TFC_Core.sendInfoMessage(player, new ChatComponentTranslation("gui.warning.heatstroke"));
 						player.attackEntityFrom(new DamageSource("heatStroke").setDamageBypassesArmor().setDamageIsAbsolute(), 2);
+					}
+						
 				}
 			}
 		}
