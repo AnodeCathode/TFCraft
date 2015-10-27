@@ -11,6 +11,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import com.bioxx.tfc.Blocks.Terrain.BlockCobble;
+import com.bioxx.tfc.Blocks.Terrain.BlockDirt;
+import com.bioxx.tfc.Blocks.Terrain.BlockGravel;
+import com.bioxx.tfc.Blocks.Terrain.BlockOre;
+import com.bioxx.tfc.Blocks.Terrain.BlockSand;
+import com.bioxx.tfc.Blocks.Terrain.BlockSmooth;
+import com.bioxx.tfc.Blocks.Terrain.BlockStone;
 import com.bioxx.tfc.Core.TFC_Achievements;
 import com.bioxx.tfc.Core.TFC_Core;
 import com.bioxx.tfc.TileEntities.TEAnvil;
@@ -115,8 +122,8 @@ public class ItemHammer extends ItemTerraTool implements ICausesDamage
 	            return false;
 	        }
 	        else {
-	        	itemstack.damageItem( (int) itemstack.getMaxDamage()/ 25 + 100, player);
-	        	TFC_Core.addPlayerExhaustion(player, 0.05f);
+	        	itemstack.damageItem( (int) itemstack.getMaxDamage()/ 30 + 100, player);
+	        	TFC_Core.addPlayerExhaustion(player, 0.1F);
 	        }
 
         }
@@ -133,17 +140,20 @@ public class ItemHammer extends ItemTerraTool implements ICausesDamage
     }
     
 	private boolean checkNeighbours(World world,  int x,  int y,  int z) {
-        return world.getBlock(x, y, z).getUnlocalizedName().toLowerCase().contains("glass") || 
-        		(checkBlock(world.getBlock(x + 1, y, z)) && 
-				checkBlock(world.getBlock(x - 1, y, z)) && 
-				checkBlock(world.getBlock(x, y + 1, z)) && 
-				checkBlock(world.getBlock(x, y - 1, z)) && 
-				checkBlock(world.getBlock(x, y, z + 1)) && 
-				checkBlock(world.getBlock(x, y, z - 1)));
+        		
+		return  !checkNeighbourBlock(world.getBlock(x + 1, y, z)) && 
+				!checkNeighbourBlock(world.getBlock(x - 1, y, z)) && 
+				!checkNeighbourBlock(world.getBlock(x, y + 1, z)) && 
+				!checkNeighbourBlock(world.getBlock(x, y - 1, z)) && 
+				!checkNeighbourBlock(world.getBlock(x, y, z + 1)) && 
+				!checkNeighbourBlock(world.getBlock(x, y, z - 1));
 	}
     
     private boolean checkBlock(Block block) {
          String checkBlockName = block.getUnlocalizedName().toLowerCase();
-        return checkBlockName.contains("brick") || checkBlockName.contains("smooth") || checkBlockName.contains("glass") || block.getMaterial() == Material.air;
+        return block instanceof BlockSmooth || checkBlockName.contains("brick") || checkBlockName.contains("smooth") || checkBlockName.contains("glass");
+    }
+    private boolean checkNeighbourBlock(Block block) {
+    	return block instanceof BlockStone || block instanceof BlockOre || block instanceof BlockCobble || block instanceof BlockGravel || block instanceof BlockDirt || block instanceof BlockSand;
     }
 }
