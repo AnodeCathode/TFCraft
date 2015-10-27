@@ -33,7 +33,7 @@ public class Weather2 implements IWeather2
 			
 			if (storm != null && storm.isPrecipitating()) 
 			{
-				double radius = (double) storm.size / 2;
+				double radius = (double) storm.size / 0.75;
 				Vec3 location = storm.pos;
 				if (startVec3.distanceTo(location) < radius)
 				{
