@@ -15,24 +15,28 @@ public class Weather2 implements IWeather2
 		
 		
 	}
-	
-	public void load(){
-		
-	}
+
 	
 	@Method(modid="weather2")
 	public boolean isRainingOnCoord(World worldObj, int xCoord, int yCoord, int zCoord) 
 	{
 		int dim = worldObj.provider.dimensionId;
 		WeatherManagerServer wms = ServerTickHandler.lookupDimToWeatherMan.get(dim);
-	
-		StormObject storm = wms.getClosestStorm(Vec3.createVectorHelper(xCoord, StormObject.layers.get(0), zCoord), 64, -1, true);
-		if (storm !=null) 
+		Vec3 startVec3 = Vec3.createVectorHelper(xCoord, yCoord, zCoord);
+		StormObject storm = wms.getClosestStorm(startVec3, 300, -1, true);
+		
+		if (storm !=null && storm.levelWater > storm.levelWaterStartRaining) 
 		{
-			return true;
-
+			double radius = (double) storm.size / 2;
+			Vec3 location = storm.pos;
+			if (startVec3.distanceTo(location) < radius)
+			{
+				return true;				
+			}
 		}
 		return false;	
 	}
+
+
 
 }
