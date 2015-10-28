@@ -15,6 +15,7 @@ import com.bioxx.tfc.Core.Player.PlayerInfo;
 import com.bioxx.tfc.Core.Player.PlayerManagerTFC;
 import com.bioxx.tfc.Entities.Mobs.EntityHorseTFC;
 import com.bioxx.tfc.GUI.*;
+import com.bioxx.tfc.ModSupport.ShipsMod;
 import com.bioxx.tfc.TileEntities.*;
 
 public class GuiHandler extends com.bioxx.tfc.Handlers.GuiHandler
@@ -29,7 +30,8 @@ public class GuiHandler extends com.bioxx.tfc.Handlers.GuiHandler
 			te= world.getTileEntity(x, y, z);
 			if (te == null && Loader.isModLoaded("cuchaz.ships"))
 			{
-				world = ShipIntermediary.translateWorld(world, player.inventory);
+				com.bioxx.tfc.ModSupport.ShipsMod shipsMod = new ShipsMod();
+				world = shipsMod.getShipsWorld(world, player.inventory);
 				te = world.getTileEntity(x, y, z);
 			}
 
