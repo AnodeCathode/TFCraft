@@ -245,6 +245,7 @@ public class TFC_Core
 		Random r = new Random(seed);
 		world.provider.registerWorld(world);
 		Recipes.registerAnvilRecipes(r, world);
+		TFC_Time.updateTime(world);
 		// TerraFirmaCraft.proxy.registerSkyProvider(world.provider);
 	}
 
@@ -659,6 +660,21 @@ public class TFC_Core
 		if (block == TFCBlocks.grass || block == TFCBlocks.dryGrass)
 			return TFCBlocks.dirt;
 		return TFCBlocks.dirt2;
+	}
+
+	public static Block getTypeForSoil(Block block)
+	{
+		if (TFC_Core.isGrass(block))
+		{
+			if (TFC_Core.isGrassType1(block))
+				return TFCBlocks.dirt;
+			else if (TFC_Core.isGrassType2(block))
+				return TFCBlocks.dirt2;
+			else if (TFC_Core.isPeatGrass(block))
+				return TFCBlocks.peat;
+		}
+
+		return block;
 	}
 
 	public static Block getTypeForClay(int inMeta)
