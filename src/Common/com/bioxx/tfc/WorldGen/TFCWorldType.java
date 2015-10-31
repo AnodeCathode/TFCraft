@@ -11,6 +11,7 @@ public class TFCWorldType extends WorldType
 {
 	public static TFCWorldType defaultWorldType;
 	public static TFCWorldType flatWorldType;
+	
 
 	//	private static final  BiomeGenBase[] tfcBiomes = new BiomeGenBase[] {
 	//		TFCBiome.HighHills, TFCBiome.swampland, TFCBiome.plains,
@@ -19,7 +20,14 @@ public class TFCWorldType extends WorldType
 		TFCBiome.OCEAN
 	};
 	private static final TFCBiome[] BIOMES_FLAT = new TFCBiome[] {
-		TFCBiome.HELL
+		TFCBiome.HELL,
+		TFCBiome.OCEAN,
+		TFCBiome.HIGH_HILLS,
+		TFCBiome.PLAINS,
+		TFCBiome.HIGH_PLAINS,
+		TFCBiome.SWAMPLAND,
+		TFCBiome.ROLLING_HILLS,
+		TFCBiome.MOUNTAINS,
 	};
 	private static final TFCBiome[] BIOMES_DEFAULT = new TFCBiome[] {
 		TFCBiome.OCEAN,
