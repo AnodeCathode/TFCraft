@@ -143,6 +143,8 @@ public class ChunkData
 	 */
 	public float getRainfall(int x, int z)
 	{
+		if (rainfallMap == null)
+			return 0.0f;
 		if (rainfallMap[x * z] != null)
 			return rainfallMap[x * z].floatdata1;
 		else

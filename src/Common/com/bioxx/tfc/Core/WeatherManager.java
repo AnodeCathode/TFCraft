@@ -94,7 +94,7 @@ public class WeatherManager
 			if (Loader.isModLoaded("weather2") && !worldObj.isRemote)
 			{
 				com.bioxx.tfc.ModSupport.Weather2 weather2 = new com.bioxx.tfc.ModSupport.Weather2();
-				return weather2.isRainingOnCoord(worldObj, xCoord, yCoord, zCoord);
+				//return weather2.isRainingOnCoord(worldObj, xCoord, yCoord, zCoord);
 			}
 			return worldObj.isRaining();	
 		}

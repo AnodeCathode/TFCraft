@@ -1,26 +1,39 @@
 package com.bioxx.tfc.WorldGen;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.WorldChunkManagerHell;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderHell;
 import net.minecraft.world.storage.WorldInfo;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import com.bioxx.tfc.Core.TFC_Climate;
+import com.bioxx.tfc.Core.TFC_Core;
+import com.bioxx.tfc.api.TFCBlocks;
 
 public class TFCProviderHell extends TFCProvider
 {
 	@Override
 	protected void registerWorldChunkManager()
 	{
-		worldChunkMgr = new TFCWorldChunkManagerHell(TFCBiome.HELL, 1F, 1F, this.worldObj);
-		if(worldObj.isRemote)
-			TFC_Climate.worldPair.put(worldObj, new WorldCacheManager(worldObj));
-		else
-			TFC_Climate.worldPair.put(worldObj, new WorldCacheManager(worldObj));
+		/**
+		 * ChunkEventHandler.onLoadWorld gets called after the NEW World gen stuff.
+		 * Trying to make a NEW World will produce a crash because the cache is empty.
+		 * ..maybe this is not the best place for this, but it works :)
+		 */
+		TFC_Climate.worldPair.put(worldObj, new WorldCacheManager(worldObj));
+		TFC_Core.addCDM(worldObj);
+		this.worldChunkMgr = new TFCWorldChunkManagerHell(TFCBiome.HELL, 0.0F, 0, worldObj);
+        this.dimensionId = -1;
+        this.hasNoSky = true;
+		
 	}
 
 	@Override
@@ -37,7 +50,7 @@ public class TFCProviderHell extends TFCProvider
 	@Override
 	public IChunkProvider createChunkGenerator()
 	{
-		return new ChunkProviderHell(this.worldObj, this.worldObj.getSeed());
+		return new TFCChunkProviderHell(this.worldObj, (long) (this.worldObj.getSeed() * Math.PI), true);
 	}
 
 	@Override
@@ -81,7 +94,7 @@ public class TFCProviderHell extends TFCProvider
 	@Override
 	public String getDimensionName()
 	{
-		return "Nether";
+		return "Nother";
 	}
 
 	@Override
@@ -89,5 +102,31 @@ public class TFCProviderHell extends TFCProvider
 	{
 		return Vec3.createVectorHelper(0.20000000298023224D, 0.029999999329447746D, 0.029999999329447746D);
 	}
+	
+	@Override
+	public ChunkCoordinates getEntrancePortalLocation()
+	{
+		return getSpawnPoint();
+	}
+	@Override
+	public boolean canSnowAt(int x, int y, int z, boolean checkLight)
+	{
+		return false;
+	}
+	@Override
+	public boolean canDoRainSnowIce(Chunk chunk)
+	{
+		return false;
+	}
+	@Override
+	public boolean canBlockFreeze(int x, int y, int z, boolean byWater)
+	{
+		return false;
+	}
+    @SideOnly(Side.CLIENT)
+    public boolean isSkyColored()
+    {
+        return false;
+    }
 
 }

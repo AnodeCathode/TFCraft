@@ -21,7 +21,7 @@ public class ServerTickHandler
 		World world = event.world;
 		if(event.phase == Phase.START)
 		{
-			if(world.provider.dimensionId == 0 && world.getWorldInfo().getSeed() != wSeed)
+			if(world.getWorldInfo().getSeed() != wSeed)
 			{
 				TFC_Core.setupWorld(world);
 				wSeed = world.getWorldInfo().getSeed();
