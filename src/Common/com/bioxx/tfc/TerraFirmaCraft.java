@@ -3,8 +3,10 @@
 //=======================================================
 package com.bioxx.tfc;
 
+import com.bioxx.tfc.WorldGen.Structure.MapGenFortressTFC;
 import net.minecraft.world.WorldType;
 
+import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.common.MinecraftForge;
@@ -39,6 +41,9 @@ import com.bioxx.tfc.api.TFCOptions;
 import com.bioxx.tfc.api.Constant.Global;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import static com.bioxx.tfc.WorldGen.Structure.StructureFortressPieces.registerStructureFortressPieces;
+import static net.minecraft.world.gen.structure.MapGenStructureIO.registerStructure;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION, dependencies = Reference.MOD_DEPENDENCIES, guiFactory = Reference.GUI_FACTORY)
 public class TerraFirmaCraft
@@ -131,10 +136,12 @@ public class TerraFirmaCraft
 		DimensionManager.registerProviderType(-1, TFCProviderHell.class, false);
 		DimensionManager.registerProviderType(0, TFCProvider.class, true);
 		DimensionManager.registerProviderType(1, TFCProvider.class, false);
-
+		DimensionManager.registerProviderType(2, TFCProviderHell.class, false);
+		
 		DimensionManager.registerDimension(-1, -1);
 		DimensionManager.registerDimension(0, 0);
 		DimensionManager.registerDimension(1, 1);
+		DimensionManager.registerDimension(2, 2);
 	}
 
 	@EventHandler
@@ -213,6 +220,10 @@ public class TerraFirmaCraft
 		//WAILA stuff
 		proxy.registerWailaClasses();
 		proxy.hideNEIItems();
+
+		//Structure Stuff
+		registerStructure(MapGenFortressTFC.Start.class, "Fortress");
+		registerStructureFortressPieces();
 	}
 
 	@EventHandler

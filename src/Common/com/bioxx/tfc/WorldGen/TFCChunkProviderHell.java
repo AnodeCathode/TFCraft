@@ -1,14 +1,17 @@
 package com.bioxx.tfc.WorldGen;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Random;
 
+import com.bioxx.tfc.Blocks.Terrain.BlockCollapsible;
 import com.bioxx.tfc.Chunkdata.ChunkData;
 import com.bioxx.tfc.Core.TFC_Climate;
 import com.bioxx.tfc.Core.TFC_Core;
 import com.bioxx.tfc.WorldGen.MapGen.MapGenCavesTFC;
 import com.bioxx.tfc.WorldGen.MapGen.MapGenRavineTFC;
 import com.bioxx.tfc.WorldGen.MapGen.MapGenRiverRavine;
+import com.bioxx.tfc.WorldGen.Structure.MapGenFortressTFC;
 import com.bioxx.tfc.api.TFCBlocks;
 import com.bioxx.tfc.api.Constant.Global;
 
@@ -17,7 +20,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.terraingen.PopulateChunkEvent;
+import net.minecraftforge.event.terraingen.TerrainGen;
+import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.*;
 
 public class TFCChunkProviderHell extends TFCChunkProviderGenerate {
 	
@@ -90,7 +98,12 @@ public class TFCChunkProviderHell extends TFCChunkProviderGenerate {
 	private MapGenRavineTFC surfaceRavineGen = new MapGenRavineTFC(125, 30);//surface
 	private MapGenRavineTFC ravineGen = new MapGenRavineTFC(20, 50);//deep
 	private MapGenRiverRavine riverRavineGen = new MapGenRiverRavine();
-	
+	public MapGenFortressTFC genFortress = new MapGenFortressTFC();
+
+    {
+    	genFortress = (MapGenFortressTFC) TerrainGen.getModdedMapGen(genFortress, NETHER_BRIDGE);
+
+    }
 	public TFCChunkProviderHell(World par1World, long par2, boolean par4) {
 		super(par1World, par2, par4);
 		this.worldObj = par1World;
@@ -105,8 +118,8 @@ public class TFCChunkProviderHell extends TFCChunkProviderGenerate {
 
 		this.idsTop = new Block[32768];
 		this.idsBig = new Block[16*16*256];
-		this.metaBig = new byte[16*16*256];	
-	
+		this.metaBig = new byte[16*16*256];
+		
 	}
 	@Override
 	public Chunk provideChunk(int chunkX, int chunkZ)
@@ -119,7 +132,7 @@ public class TFCChunkProviderHell extends TFCChunkProviderGenerate {
 		//
 		Arrays.fill(idsTop, null);
 		Arrays.fill(idsBig, null);
-		Arrays.fill(metaBig, (byte)0);
+		Arrays.fill(metaBig, (byte) 0);
 
 		this.generateTerrainHigh(chunkX, chunkZ, idsTop);
 
@@ -136,15 +149,14 @@ public class TFCChunkProviderHell extends TFCChunkProviderGenerate {
 		}
 
 		seaLevelOffsetMap = new int[256];
-
 		replaceBlocksForBiomeHigh(chunkX, chunkZ, idsTop, rand, idsBig, metaBig);
 		replaceBlocksForBiomeLow(chunkX, chunkZ, rand, idsBig, metaBig);
-
+		Block[] ablock = new Block[32768];
 		caveGen.generate(this, this.worldObj, chunkX, chunkZ, idsBig, metaBig);
 		surfaceRavineGen.generate(this, this.worldObj, chunkX, chunkZ, idsBig, metaBig);//surface
 		ravineGen.generate(this, this.worldObj, chunkX, chunkZ, idsBig, metaBig);//deep
 		riverRavineGen.generate(this, this.worldObj, chunkX, chunkZ, idsBig, metaBig);
-
+		this.genFortress.func_151539_a(this, this.worldObj, chunkX, chunkZ, ablock);
 		Chunk chunk = new Chunk(this.worldObj, idsBig, metaBig, chunkX, chunkZ);
 		byte[] abyte1 = chunk.getBiomeArray();
 
@@ -161,6 +173,8 @@ public class TFCChunkProviderHell extends TFCChunkProviderGenerate {
 		data.heightmap = seaLevelOffsetMap;
 		data.rainfallMap = this.rainfallLayer;
 		TFC_Core.getCDM(worldObj).addData(chunk, data);
+
+
 		//chunk.heightMap = chunkHeightMap;
 		chunk.generateSkylightMap();
 		return chunk;
@@ -186,7 +200,7 @@ public class TFCChunkProviderHell extends TFCChunkProviderGenerate {
 				DataLayer rock2 = rockLayer2[arrayIndexDL] == null ? DataLayer.GRANITE : rockLayer2[arrayIndexDL];
 				DataLayer rock3 = rockLayer3[arrayIndexDL] == null ? DataLayer.GRANITE : rockLayer3[arrayIndexDL];
 				//DataLayer evt = evtLayer[arrayIndexDL] == null ? DataLayer.EVT_0_125 : evtLayer[arrayIndexDL];
-				float rain = rainfallLayer[arrayIndexDL] == null ? DataLayer.RAIN_125.floatdata1 : rainfallLayer[arrayIndexDL].floatdata1;
+				float rain = rainfallLayer[arrayIndexDL] == null ? DataLayer.RAIN_62_5.floatdata1 : rainfallLayer[arrayIndexDL].floatdata1 / 2;
 				DataLayer drainage = drainageLayer[arrayIndexDL] == null ? DataLayer.DRAINAGE_NORMAL : drainageLayer[arrayIndexDL];
 				int var12 = (int)(stoneNoise[arrayIndex2] / 3.0D + 6.0D);
 				int var13 = -1;
@@ -207,7 +221,7 @@ public class TFCChunkProviderHell extends TFCChunkProviderGenerate {
 					int indexBig = (arrayIndex) * worldHeight + height + indexOffset;
 					int index = (arrayIndex) * 128 + height;
 					//metaBig[indexBig] = 0;
-					float temp = TFC_Climate.adjustHeightToTemp(height, bioTemp);
+					float temp = TFC_Climate.adjustHeightToTemp(height, bioTemp) * 2;
 					if(TFC_Core.isBeachBiome(biome.biomeID) && height > seaLevel+h && idsTop[index] == Blocks.stone)
 					{
 						idsTop[index] = Blocks.air;
@@ -447,6 +461,57 @@ public class TFCChunkProviderHell extends TFCChunkProviderGenerate {
 				}
 			}
 		}
+	}
+	
+	@Override
+	public void populate(IChunkProvider chunkProvider, int chunkX, int chunkZ)
+	{
+		BlockCollapsible.fallInstantly = true;
+		int xCoord = chunkX * 16;
+		int zCoord = chunkZ * 16;
+		TFCBiome biome = null;
+
+		if (this.worldObj.getBiomeGenForCoords(xCoord + 16, zCoord + 16) instanceof TFCBiome) // Fixes ClassCastException
+		{
+			biome = (TFCBiome) this.worldObj.getBiomeGenForCoords(xCoord + 16, zCoord + 16);
+		}
+
+		this.rand.setSeed(this.worldObj.getSeed());
+		long var7 = this.rand.nextLong() / 2L * 2L + 1L;
+		long var9 = this.rand.nextLong() / 2L * 2L + 1L;
+		this.rand.setSeed(chunkX * var7 + chunkZ * var9 ^ this.worldObj.getSeed());
+		boolean var11 = false;
+
+		MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(chunkProvider, worldObj, rand, chunkX, chunkZ, var11));
+
+		int x;
+		int y;
+		int z;
+
+		TFC_Core.getCDM(worldObj).setFishPop(chunkX, chunkZ, ChunkData.FISH_POP_MAX);
+
+		int waterRand = 4;
+		if(TFC_Climate.getStability(worldObj, xCoord, zCoord) == 1)
+			waterRand = 6;
+
+		if (!var11 && this.rand.nextInt(waterRand) == 0)
+		{
+			x = xCoord + this.rand.nextInt(16) + 8;
+			z = zCoord + this.rand.nextInt(16) + 8;
+			y = Global.SEALEVEL - rand.nextInt(45);
+			//fissureGen.generate(this.worldObj, this.rand, x, y, z);
+		}
+
+		if (biome != null)
+		{
+			biome.decorate(this.worldObj, this.rand, xCoord, zCoord);
+			//SpawnerAnimalsTFC.performWorldGenSpawning(this.worldObj, biome, xCoord + 8, zCoord + 8, 16, 16, this.rand);
+		}
+
+		this.genFortress.generateStructuresInChunk(this.worldObj, this.rand, chunkX, chunkZ);
+
+		MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(chunkProvider, worldObj, rand, chunkX, chunkZ, var11));
+		BlockCollapsible.fallInstantly = false;
 	}
 	private BiomeGenBase getBiome(int x, int z)
 	{
