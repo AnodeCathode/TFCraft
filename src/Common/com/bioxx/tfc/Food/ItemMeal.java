@@ -22,7 +22,6 @@ import com.bioxx.tfc.Core.TFC_Time;
 import com.bioxx.tfc.Core.Player.FoodStatsTFC;
 import com.bioxx.tfc.Items.ItemTerra;
 import com.bioxx.tfc.Render.Item.FoodItemRenderer;
-import com.bioxx.tfc.api.Food;
 import com.bioxx.tfc.api.FoodRegistry;
 import com.bioxx.tfc.api.TFCOptions;
 import com.bioxx.tfc.api.TFC_ItemHeat;
@@ -66,12 +65,15 @@ public class ItemMeal extends ItemTerra implements IFood
 	//Creates empty food to prevent NBT errors when food is loaded in NEI
 	public static ItemStack createTag(ItemStack is)
 	{
-		if (!is.hasTagCompound())
-			is.setTagCompound(new NBTTagCompound());
+		NBTTagCompound nbt = is.getTagCompound();
+		if (nbt == null)
+			nbt = new NBTTagCompound();
 
-		Food.setWeight(is, 0);
-		Food.setDecay(is, 0);
-		Food.setDecayTimer(is, (int) TFC_Time.getTotalHours() + 1);
+		nbt.setFloat("foodWeight", 0);
+		nbt.setFloat("foodDecay", 0);
+		nbt.setInteger("decayTimer", (int) TFC_Time.getTotalHours() + 1);
+
+		is.setTagCompound(nbt);
 		return is;
 	}
 
@@ -91,7 +93,7 @@ public class ItemMeal extends ItemTerra implements IFood
 		}
 
 		if (is.hasTagCompound())
-		{
+		{		
 
 			ItemFoodTFC.addFoodHeatInformation(is, arraylist);
 			addFoodInformation(is, player, arraylist);
@@ -111,37 +113,46 @@ public class ItemMeal extends ItemTerra implements IFood
 
 	public void addFoodInformation(ItemStack is, EntityPlayer player, List<String> arraylist)
 	{
-		float ounces = Helper.roundNumber(Food.getWeight(is), 100);
-		if (ounces > 0)
-			arraylist.add(TFC_Core.translate("gui.food.amount") + " " + ounces + " oz / " + Global.FOOD_MAX_WEIGHT + " oz");
-		float decay = Food.getDecay(is);
-		if (decay > 0)
-			arraylist.add(EnumChatFormatting.DARK_GRAY + TFC_Core.translate("gui.food.decay") + " " + Helper.roundNumber(decay / ounces * 100, 10) + "%");
-		if (TFCOptions.enableDebugMode)
-		{
-			arraylist.add(EnumChatFormatting.DARK_GRAY + TFC_Core.translate("gui.food.decay") + ": " + decay);
-			arraylist.add(EnumChatFormatting.DARK_GRAY + "Decay Rate: " + this.getDecayRate(is));
-		}
+		NBTTagCompound tag = is.getTagCompound();
 
-		if (TFC_Core.showCtrlInformation())
-			ItemFoodTFC.addTasteInformation(is, player, arraylist);
-		else
-			arraylist.add(TFC_Core.translate("gui.showtaste"));
+		if (tag.hasKey("foodWeight") && tag.getFloat("foodWeight") != 999)
+		{
+			float ounces = Helper.roundNumber(tag.getFloat("foodWeight"), 100);
+			if (ounces > 0)
+				arraylist.add(TFC_Core.translate("gui.food.amount") + " " + ounces + " oz / " + Global.FOOD_MAX_WEIGHT + " oz");
+			float decay = tag.getFloat("foodDecay");
+			if (decay > 0)
+				arraylist.add(EnumChatFormatting.DARK_GRAY + TFC_Core.translate("gui.food.decay") + " " + Helper.roundNumber(decay / ounces * 100, 10) + "%");
+			if (TFCOptions.enableDebugMode)
+			{
+				arraylist.add(EnumChatFormatting.DARK_GRAY + TFC_Core.translate("gui.food.decay") + ": " + decay);
+				arraylist.add(EnumChatFormatting.DARK_GRAY + "Decay Rate: " + this.getDecayRate(is));
+			}
+
+			if (TFC_Core.showCtrlInformation())
+				ItemFoodTFC.addTasteInformation(is, player, arraylist);
+			else
+				arraylist.add(TFC_Core.translate("gui.showtaste"));
+		}
 	}
 
 	protected void addFGInformation(ItemStack is, List<String> arraylist)
 	{
-		int[] fg = Food.getFoodGroups(is);
-		for (int i = 0; i < fg.length; i++)
+		NBTTagCompound nbt = is.getTagCompound();
+		if (nbt.hasKey("FG"))
 		{
-			if (fg[i] != -1)
-				arraylist.add(localize(fg[i]));
+			int[] fg = nbt.getIntArray("FG");
+			for (int i = 0; i < fg.length; i++)
+			{
+				if (fg[i] != -1)
+					arraylist.add(localize(fg[i]));
+			}
 		}
 	}
 
 	protected String localize(int id)
 	{
-		return ItemFoodTFC.getFoodGroupColor(FoodRegistry.getInstance().getFoodGroup(id)) +
+		return ItemFoodTFC.getFoodGroupColor(FoodRegistry.getInstance().getFoodGroup(id)) + 
 				TFC_Core.translate(FoodRegistry.getInstance().getFood(id).getUnlocalizedName() + ".name");
 	}
 
@@ -200,12 +211,13 @@ public class ItemMeal extends ItemTerra implements IFood
 			//add the nutrition contents
 			if (is.hasTagCompound())
 			{
-				float weight = Food.getWeight(is);
-				float decay = Math.max(Food.getDecay(is), 0);
+				ItemMeal item = (ItemMeal) is.getItem();
+				float weight = item.getFoodWeight(is);
+				float decay = Math.max(item.getFoodDecay(is), 0);
 				float eatAmount = getEatAmount(foodstats, weight - decay);
 				float tasteFactor = foodstats.getTasteFactor(is);
 
-				int[] fg = Food.getFoodGroups(is);
+				int[] fg = is.getTagCompound().getIntArray("FG");
 				float[] nWeights = getNutritionalWeights(fg);
 				for (int i = 0; i < fg.length; i++ )
 				{
@@ -226,7 +238,7 @@ public class ItemMeal extends ItemTerra implements IFood
 			else
 			{
 				String error = TFC_Core.translate("error.error") + " " + is.getDisplayName() + " " +
-						TFC_Core.translate("error.NBT") + " " + TFC_Core.translate("error.Contact");
+								TFC_Core.translate("error.NBT") + " " + TFC_Core.translate("error.Contact");
 				TerraFirmaCraft.LOG.error(error);
 				TFC_Core.sendInfoMessage(player, new ChatComponentText(error));
 			}
@@ -237,7 +249,7 @@ public class ItemMeal extends ItemTerra implements IFood
 
 	/*private float getMaxWeight(ItemStack is)
 	{
-		int[] fg = Food.getFoodGroups(is);
+		int[] fg = is.getTagCompound().getIntArray("FG");
 		float w = 0;
 		for(int i = 0; i < fg.length; i++)
 		{
@@ -250,6 +262,28 @@ public class ItemMeal extends ItemTerra implements IFood
 	public static boolean isWarm(ItemStack is)
 	{
 		return TFC_ItemHeat.getTemp(is) > TFC_ItemHeat.isCookable(is) * 0.1;
+	}
+
+	@Override
+	public float getFoodWeight(ItemStack is)
+	{
+		if(is.hasTagCompound() && is.getTagCompound().hasKey("foodWeight"))
+		{
+			NBTTagCompound nbt = is.getTagCompound();
+			return nbt.getFloat("foodWeight");
+		}
+		return 0f;
+	}
+
+	@Override
+	public float getFoodDecay(ItemStack is)
+	{
+		if(is.hasTagCompound() && is.getTagCompound().hasKey("foodDecay"))
+		{
+			NBTTagCompound nbt = is.getTagCompound();
+			return nbt.getFloat("foodDecay");
+		}
+		return 0f;
 	}
 
 	/**
@@ -312,7 +346,7 @@ public class ItemMeal extends ItemTerra implements IFood
 	@Override
 	public float getDecayRate(ItemStack is)
 	{
-		return Food.getDecayRate(is);
+		return 0;
 	}
 
 	@Override
@@ -338,7 +372,14 @@ public class ItemMeal extends ItemTerra implements IFood
 		int base = 0;
 		if (is != null && is.hasTagCompound() && is.getTagCompound().hasKey("tasteSweet"))
 			base = is.getTagCompound().getInteger("tasteSweet");
-		return base + Food.getSweetMod(is);
+		return base + getTasteSweetMod(is);
+	}
+
+	public int getTasteSweetMod(ItemStack is) {
+		int mod = 0;
+		if (is != null && is.hasTagCompound() && is.getTagCompound().hasKey("tasteSweetMod"))
+			mod = is.getTagCompound().getInteger("tasteSweetMod");
+		return mod;
 	}
 
 	@Override
@@ -346,7 +387,14 @@ public class ItemMeal extends ItemTerra implements IFood
 		int base = 0;
 		if (is != null && is.hasTagCompound() && is.getTagCompound().hasKey("tasteSour"))
 			base = is.getTagCompound().getInteger("tasteSour");
-		return base + Food.getSourMod(is);
+		return base + getTasteSourMod(is);
+	}
+
+	public int getTasteSourMod(ItemStack is) {
+		int mod = 0;
+		if (is != null && is.hasTagCompound() && is.getTagCompound().hasKey("tasteSourMod"))
+			mod = is.getTagCompound().getInteger("tasteSourMod");
+		return mod;
 	}
 
 	@Override
@@ -354,7 +402,14 @@ public class ItemMeal extends ItemTerra implements IFood
 		int base = 0;
 		if (is != null && is.hasTagCompound() && is.getTagCompound().hasKey("tasteSalty"))
 			base = is.getTagCompound().getInteger("tasteSalty");
-		return base + Food.getSaltyMod(is);
+			return base + getTasteSaltyMod(is);
+	}
+
+	public int getTasteSaltyMod(ItemStack is) {
+		int mod = 0;
+		if (is != null && is.hasTagCompound() && is.getTagCompound().hasKey("tasteSaltyMod"))
+			mod = is.getTagCompound().getInteger("tasteSaltyMod");
+		return mod;
 	}
 
 	@Override
@@ -362,7 +417,14 @@ public class ItemMeal extends ItemTerra implements IFood
 		int base = 0;
 		if (is != null && is.hasTagCompound() && is.getTagCompound().hasKey("tasteBitter"))
 			base = is.getTagCompound().getInteger("tasteBitter");
-		return base + Food.getBitterMod(is);
+		return base + getTasteBitterMod(is);
+	}
+
+	public int getTasteBitterMod(ItemStack is) {
+		int mod = 0;
+		if (is != null && is.hasTagCompound() && is.getTagCompound().hasKey("tasteBitterMod"))
+			mod = is.getTagCompound().getInteger("tasteBitterMod");
+		return mod;
 	}
 
 	@Override
@@ -370,7 +432,14 @@ public class ItemMeal extends ItemTerra implements IFood
 		int base = 0;
 		if (is != null && is.hasTagCompound() && is.getTagCompound().hasKey("tasteUmami"))
 			base = is.getTagCompound().getInteger("tasteUmami");
-		return base + Food.getSavoryMod(is);
+		return base + getTasteSavoryMod(is);
+	}
+
+	public int getTasteSavoryMod(ItemStack is) {
+		int mod = 0;
+		if (is != null && is.hasTagCompound() && is.getTagCompound().hasKey("tasteUmamiMod"))
+			mod = is.getTagCompound().getInteger("tasteUmamiMod");
+		return mod;
 	}
 
 	@Override

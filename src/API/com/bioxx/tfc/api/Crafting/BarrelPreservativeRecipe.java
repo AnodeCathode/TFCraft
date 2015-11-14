@@ -103,7 +103,7 @@ public class BarrelPreservativeRecipe {
 		{
 			return false;
 		}
-		float w = Food.getWeight(itemStack);
+		float w = iFood.getFoodWeight(itemStack);
 		return liquidPerOz.amount * w <= fluid.amount;
 	}
 	

@@ -15,6 +15,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import com.bioxx.tfc.TerraFirmaCraft;
 import com.bioxx.tfc.Core.TFC_Core;
+import com.bioxx.tfc.Core.TFC_Time;
 import com.bioxx.tfc.Food.ItemFoodTFC;
 import com.bioxx.tfc.Handlers.Network.AbstractPacket;
 import com.bioxx.tfc.Handlers.Network.CreateMealPacket;
@@ -24,6 +25,7 @@ import com.bioxx.tfc.api.TFCItems;
 import com.bioxx.tfc.api.Constant.Global;
 import com.bioxx.tfc.api.Interfaces.IFood;
 import com.bioxx.tfc.api.Interfaces.IItemFoodBlock;
+import com.bioxx.tfc.api.Util.Helper;
 
 public class TEFoodPrep extends NetworkTileEntity implements IInventory
 {
@@ -91,19 +93,9 @@ public class TEFoodPrep extends NetworkTileEntity implements IInventory
 	{
 		if(validateSandwich())//Bread
 		{
+			NBTTagCompound nbt = new NBTTagCompound();
 			ItemStack is = new ItemStack(TFCItems.sandwich, 1);
-
-			float w = 0;
-			for (int i = 0; i < 5; i++)
-			{
-				ItemStack f = getStackInSlot(i);
-				if (f != null && Food.getWeight(f) >= sandwichWeights[i])
-					w += sandwichWeights[i];
-			}
-
-			ItemFoodTFC.createTag(is, w);
-			Food.setDecayRate(is, 2.0F);
-
+			//Random R = new Random(getFoodSeed());
 			int[] foodGroups = new int[]{-1,-1,-1,-1,-1};
 			if(getStackInSlot(0) != null) foodGroups[0] = ((IFood)(getStackInSlot(0).getItem())).getFoodID();
 			if(getStackInSlot(1) != null) foodGroups[1] = ((IFood)(getStackInSlot(1).getItem())).getFoodID();
@@ -111,11 +103,24 @@ public class TEFoodPrep extends NetworkTileEntity implements IInventory
 			if(getStackInSlot(3) != null) foodGroups[3] = ((IFood)(getStackInSlot(3).getItem())).getFoodID();
 			if(getStackInSlot(4) != null) foodGroups[4] = ((IFood)(getStackInSlot(4).getItem())).getFoodID();
 
-			Food.setFoodGroups(is, foodGroups);
+			nbt.setIntArray("FG", foodGroups);
 			setSandwichIcon(is);
 
-			combineTastes(is.getTagCompound(), sandwichWeights, getStackInSlot(0), getStackInSlot(1), getStackInSlot(2), getStackInSlot(3), getStackInSlot(4));
+			float w = 0;
+			for(int i = 0; i < 5; i++)
+			{
+				ItemStack f = getStackInSlot(i);
+				if(f != null && ((IFood)f.getItem()).getFoodWeight(f) >= sandwichWeights[i])
+					w += sandwichWeights[i];
+			}
 
+			nbt.setFloat("foodWeight", Helper.roundNumber(w, 10));
+			nbt.setFloat("foodDecay", -24);
+			nbt.setFloat("decayRate", 2.0f);
+			nbt.setInteger("decayTimer", (int)TFC_Time.getTotalHours() + 1);
+			combineTastes(nbt, sandwichWeights, getStackInSlot(0), getStackInSlot(1), getStackInSlot(2), 
+					getStackInSlot(3), getStackInSlot(4));
+			is.setTagCompound(nbt);
 			Food.setMealSkill(is, TFC_Core.getSkillStats(player).getSkillRank(Global.SKILL_COOKING).ordinal());
 			this.setInventorySlotContents(6, is);
 
@@ -144,31 +149,33 @@ public class TEFoodPrep extends NetworkTileEntity implements IInventory
 	{
 		if(validateSalad())//Bread
 		{
+			NBTTagCompound nbt = new NBTTagCompound();
 			ItemStack is = new ItemStack(TFCItems.salad, 1);
-
-			float w = 0;
-			for(int i = 0; i < 4; i++)
-			{
-				ItemStack f = getStackInSlot(i+1);
-				if (f != null && Food.getWeight(f) >= saladWeights[i])
-					w += saladWeights[i];
-			}
-			
-			ItemFoodTFC.createTag(is, w);
-			Food.setDecayRate(is, 2.0F);
-
+			//Random R = new Random(getFoodSeed());
 			int[] foodGroups = new int[]{-1,-1,-1,-1};
 			if(getStackInSlot(1) != null) foodGroups[0] = ((IFood)(getStackInSlot(1).getItem())).getFoodID();
 			if(getStackInSlot(2) != null) foodGroups[1] = ((IFood)(getStackInSlot(2).getItem())).getFoodID();
 			if(getStackInSlot(3) != null) foodGroups[2] = ((IFood)(getStackInSlot(3).getItem())).getFoodID();
 			if(getStackInSlot(4) != null) foodGroups[3] = ((IFood)(getStackInSlot(4).getItem())).getFoodID();
 
-			Food.setFoodGroups(is, foodGroups);
+			nbt.setIntArray("FG", foodGroups);
 
 			is.setItemDamage(new Random(getIconSeed()).nextInt(((ItemTerra)TFCItems.salad).metaIcons.length));
-			
-			combineTastes(is.getTagCompound(), saladWeights, getStackInSlot(1), getStackInSlot(2), getStackInSlot(3), getStackInSlot(4));
 
+			float w = 0;
+			for(int i = 0; i < 4; i++)
+			{
+				ItemStack f = getStackInSlot(i+1);
+				if(f != null && ((IFood)f.getItem()).getFoodWeight(f) >= saladWeights[i])
+					w += saladWeights[i];
+			}
+
+			nbt.setFloat("foodWeight", Helper.roundNumber(w, 10));
+			nbt.setFloat("foodDecay", -24);
+			nbt.setFloat("decayRate", 2.0f);
+			nbt.setInteger("decayTimer", (int)TFC_Time.getTotalHours() + 1);
+			combineTastes(nbt, saladWeights, getStackInSlot(1), getStackInSlot(2), getStackInSlot(3), getStackInSlot(4));
+			is.setTagCompound(nbt);
 			Food.setMealSkill(is, TFC_Core.getSkillStats(player).getSkillRank(Global.SKILL_COOKING).ordinal());
 			this.setInventorySlotContents(6, is);
 
@@ -197,7 +204,7 @@ public class TEFoodPrep extends NetworkTileEntity implements IInventory
 			for(int i = 0; i < 5; i++)
 			{
 				ItemStack f = getStackInSlot(i);
-				if (f != null && f.getItem() instanceof IFood && Food.getWeight(f) - Food.getDecay(f) >= sandwichWeights[i])
+				if (f != null && f.getItem() instanceof IFood && ((IFood) f.getItem()).getFoodWeight(f) - ((IFood) f.getItem()).getFoodDecay(f) >= sandwichWeights[i])
 				{
 					weight += sandwichWeights[i];
 				}
@@ -230,7 +237,7 @@ public class TEFoodPrep extends NetworkTileEntity implements IInventory
 			for(int i = 0; i < 4; i++)
 			{
 				ItemStack f = getStackInSlot(i+1);
-				if (f != null && Food.getWeight(f) - Food.getDecay(f) >= saladWeights[i])
+				if(f != null && ((IFood)f.getItem()).getFoodWeight(f) - ((IFood)f.getItem()).getFoodDecay(f) >= saladWeights[i])
 				{
 					weight += saladWeights[i];
 				}
@@ -336,10 +343,10 @@ public class TEFoodPrep extends NetworkTileEntity implements IInventory
 			ItemStack is = isArray[i];
 			if(is != null)
 			{
-				float oldW = Food.getWeight(is);
-				Food.setWeight(is, oldW - weights[i]);
-				float newW = Food.getWeight(is);
-				if (newW <= 0 || newW <= Food.getDecay(is))
+				float oldW = ((ItemFoodTFC)is.getItem()).getFoodWeight(is);
+				is.getTagCompound().setFloat("foodWeight", oldW - weights[i]);
+				float newW = ((ItemFoodTFC)is.getItem()).getFoodWeight(is);
+				if(newW <= 0 || newW <= ((ItemFoodTFC)is.getItem()).getFoodDecay(is))
 					is.stackSize = 0;
 			}
 		}

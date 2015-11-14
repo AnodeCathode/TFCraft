@@ -611,7 +611,7 @@ public class TEBarrel extends NetworkTileEntity implements IInventory
 			}
 			if(fluid != null && itemstack != null && itemstack.getItem() instanceof IFood)
 			{
-				float w = Food.getWeight(itemstack);
+				float w = ((IFood)itemstack.getItem()).getFoodWeight(itemstack);
 				if(fluid.getFluid() == TFCFluids.VINEGAR)
 				{
 					//If the food is brined then we attempt to pickle it
