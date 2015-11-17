@@ -1,4 +1,4 @@
-package com.bioxx.tfc.WorldGen;
+package com.bioxx.tfc.WorldGen.Nother;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -16,9 +16,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import com.bioxx.tfc.Core.TFC_Climate;
 import com.bioxx.tfc.Core.TFC_Core;
+import com.bioxx.tfc.WorldGen.TFCProvider;
+import com.bioxx.tfc.WorldGen.WorldCacheManager;
 import com.bioxx.tfc.api.TFCBlocks;
 
-public class TFCProviderHell extends TFCProvider
+public class TFCProviderNother extends TFCProvider
 {
 	@Override
 	protected void registerWorldChunkManager()
@@ -30,8 +32,8 @@ public class TFCProviderHell extends TFCProvider
 		 */
 		TFC_Climate.worldPair.put(worldObj, new WorldCacheManager(worldObj));
 		TFC_Core.addCDM(worldObj);
-		this.worldChunkMgr = new TFCWorldChunkManagerHell(TFCBiome.HELL, 0.0F, 0, worldObj);
-        this.dimensionId = 2;
+		this.worldChunkMgr = new TFCWorldChunkManagerNother(worldObj);
+        this.dimensionId = -1;
         this.hasNoSky = true;
 		
 	}
@@ -50,7 +52,7 @@ public class TFCProviderHell extends TFCProvider
 	@Override
 	public IChunkProvider createChunkGenerator()
 	{
-		return new TFCChunkProviderHell(this.worldObj, (long) (this.worldObj.getSeed() * Math.PI), true);
+		return new TFCChunkProviderNother(this.worldObj, (long) (this.worldObj.getSeed() * Math.PI), true);
 	}
 
 	@Override
@@ -63,7 +65,7 @@ public class TFCProviderHell extends TFCProvider
 	@Override
 	public boolean isSurfaceWorld()
 	{
-		return false;
+		return true;
 	}
 
 	@Override

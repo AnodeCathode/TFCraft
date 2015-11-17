@@ -1,6 +1,8 @@
-package com.bioxx.tfc.WorldGen;
+package com.bioxx.tfc.WorldGen.Nother;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -8,17 +10,33 @@ import com.bioxx.tfc.Blocks.Terrain.BlockCollapsible;
 import com.bioxx.tfc.Chunkdata.ChunkData;
 import com.bioxx.tfc.Core.TFC_Climate;
 import com.bioxx.tfc.Core.TFC_Core;
+import com.bioxx.tfc.Core.TFC_Time;
+import com.bioxx.tfc.Entities.Mobs.EntityBear;
+import com.bioxx.tfc.Entities.Mobs.EntityChickenTFC;
+import com.bioxx.tfc.Entities.Mobs.EntityCowTFC;
+import com.bioxx.tfc.Entities.Mobs.EntityDeer;
+import com.bioxx.tfc.Entities.Mobs.EntityHorseTFC;
+import com.bioxx.tfc.Entities.Mobs.EntityPheasantTFC;
+import com.bioxx.tfc.Entities.Mobs.EntityPigTFC;
+import com.bioxx.tfc.Entities.Mobs.EntitySheepTFC;
+import com.bioxx.tfc.Entities.Mobs.EntityWolfTFC;
+import com.bioxx.tfc.WorldGen.DataLayer;
+import com.bioxx.tfc.WorldGen.TFCBiome;
+import com.bioxx.tfc.WorldGen.TFCChunkProviderGenerate;
 import com.bioxx.tfc.WorldGen.MapGen.MapGenCavesTFC;
 import com.bioxx.tfc.WorldGen.MapGen.MapGenRavineTFC;
 import com.bioxx.tfc.WorldGen.MapGen.MapGenRiverRavine;
-import com.bioxx.tfc.WorldGen.Structure.MapGenFortressTFC;
+import com.bioxx.tfc.WorldGen.Nother.Structure.MapGenFortressTFC;
 import com.bioxx.tfc.api.TFCBlocks;
 import com.bioxx.tfc.api.Constant.Global;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
@@ -27,7 +45,7 @@ import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.*;
 
-public class TFCChunkProviderHell extends TFCChunkProviderGenerate {
+public class TFCChunkProviderNother extends TFCChunkProviderGenerate {
 	
 	/** RNG. */
 	private Random rand;
@@ -104,7 +122,7 @@ public class TFCChunkProviderHell extends TFCChunkProviderGenerate {
     	genFortress = (MapGenFortressTFC) TerrainGen.getModdedMapGen(genFortress, NETHER_BRIDGE);
 
     }
-	public TFCChunkProviderHell(World par1World, long par2, boolean par4) {
+	public TFCChunkProviderNother(World par1World, long par2, boolean par4) {
 		super(par1World, par2, par4);
 		this.worldObj = par1World;
 		this.rand = new Random(par2);
@@ -195,7 +213,7 @@ public class TFCChunkProviderHell extends TFCChunkProviderGenerate {
 				int arrayIndex = xCoord + zCoord * 16;
 				int arrayIndexDL = zCoord + xCoord * 16;
 				int arrayIndex2 = xCoord+1 + zCoord+1 * 16;
-				TFCBiome biome = (TFCBiome)getBiome(xCoord,zCoord);
+				TFCBiomeGenNother biome = (TFCBiomeGenNother)getBiome(xCoord,zCoord);
 				DataLayer rock1 = rockLayer1[arrayIndexDL] == null ? DataLayer.GRANITE : rockLayer1[arrayIndexDL];
 				DataLayer rock2 = rockLayer2[arrayIndexDL] == null ? DataLayer.GRANITE : rockLayer2[arrayIndexDL];
 				DataLayer rock3 = rockLayer3[arrayIndexDL] == null ? DataLayer.GRANITE : rockLayer3[arrayIndexDL];
@@ -261,14 +279,14 @@ public class TFCChunkProviderHell extends TFCChunkProviderGenerate {
 							subSurfaceBlock = TFC_Core.getTypeForSand(rock1.data1);
 						}
 
-						if(biome == TFCBiome.BEACH || biome == TFCBiome.OCEAN || biome == TFCBiome.DEEP_OCEAN)
-						{
-							subSurfaceBlock = surfaceBlock = TFC_Core.getTypeForSand(rock1.data1);
-						}
-						else if(biome == TFCBiome.GRAVEL_BEACH)
-						{
-							subSurfaceBlock = surfaceBlock = TFC_Core.getTypeForGravel(rock1.data1);
-						}
+//						if(biome == TFCBiome.BEACH || biome == TFCBiome.OCEAN || biome == TFCBiome.DEEP_OCEAN)
+//						{
+//							subSurfaceBlock = surfaceBlock = TFC_Core.getTypeForSand(rock1.data1);
+//						}
+//						else if(biome == TFCBiome.GRAVEL_BEACH)
+//						{
+//							subSurfaceBlock = surfaceBlock = TFC_Core.getTypeForGravel(rock1.data1);
+//						}
 
 						if (var13 == -1)
 						{
@@ -346,20 +364,20 @@ public class TFCChunkProviderHell extends TFCChunkProviderGenerate {
 									metaBig[indexBig] = (byte)TFC_Core.getSoilMeta(rock1.data1);
 
 
-									for(int c = 1; c < dirtH && !TFC_Core.isMountainBiome(biome.biomeID) && 
-											biome != TFCBiome.HIGH_HILLS && biome != TFCBiome.HIGH_HILLS_EDGE && !cliffMap[arrayIndex]; c++)
-									{
-										int offsetHeight = height - c;
-										int newIndexBig = (arrayIndex) * worldHeight + offsetHeight + indexOffset;
-										idsBig[newIndexBig] = subSurfaceBlock;
-										metaBig[newIndexBig] = (byte)TFC_Core.getSoilMeta(rock1.data1);
-
-										if(c > 1+(5-drainage.data1))
-										{
-											idsBig[newIndexBig] = TFC_Core.getTypeForGravel(rock1.data1);
-											metaBig[newIndexBig] = (byte)TFC_Core.getSoilMeta(rock1.data1);
-										}
-									}
+//									for(int c = 1; c < dirtH && !TFC_Core.isMountainBiome(biome.biomeID) && 
+//											biome != TFCBiome.HIGH_HILLS && biome != TFCBiome.HIGH_HILLS_EDGE && !cliffMap[arrayIndex]; c++)
+//									{
+//										int offsetHeight = height - c;
+//										int newIndexBig = (arrayIndex) * worldHeight + offsetHeight + indexOffset;
+//										idsBig[newIndexBig] = subSurfaceBlock;
+//										metaBig[newIndexBig] = (byte)TFC_Core.getSoilMeta(rock1.data1);
+//
+//										if(c > 1+(5-drainage.data1))
+//										{
+//											idsBig[newIndexBig] = TFC_Core.getTypeForGravel(rock1.data1);
+//											metaBig[newIndexBig] = (byte)TFC_Core.getSoilMeta(rock1.data1);
+//										}
+//									}
 								}
 							}
 						}
@@ -367,28 +385,28 @@ public class TFCChunkProviderHell extends TFCChunkProviderGenerate {
 						if (height > seaLevel - 2 && height < seaLevel && idsTop[index + 1] == TFCBlocks.saltWaterStationary ||
 							height < seaLevel && idsTop[index + 1] == TFCBlocks.saltWaterStationary)
 						{
-							if (biome != TFCBiome.SWAMPLAND) // Most areas have gravel and sand bottoms
-							{
-								if (idsBig[indexBig] != TFC_Core.getTypeForSand(rock1.data1) && rand.nextInt(5) != 0)
-								{
-									idsBig[indexBig] = TFC_Core.getTypeForGravel(rock1.data1);
-									metaBig[indexBig] = (byte)TFC_Core.getSoilMeta(rock1.data1);
-								}
-							}
-							else // Swamp biomes have bottoms that are mostly dirt
-							{
-								if (idsBig[indexBig] != TFC_Core.getTypeForGravel(rock1.data1))
-								{
-									idsBig[indexBig] = TFC_Core.getTypeForDirt(rock1.data1);
-									metaBig[indexBig] = (byte) TFC_Core.getSoilMeta(rock1.data1);
-								}
-							}
+//							if (biome != TFCBiome.SWAMPLAND) // Most areas have gravel and sand bottoms
+//							{
+//								if (idsBig[indexBig] != TFC_Core.getTypeForSand(rock1.data1) && rand.nextInt(5) != 0)
+//								{
+//									idsBig[indexBig] = TFC_Core.getTypeForGravel(rock1.data1);
+//									metaBig[indexBig] = (byte)TFC_Core.getSoilMeta(rock1.data1);
+//								}
+//							}
+//							else // Swamp biomes have bottoms that are mostly dirt
+//							{
+//								if (idsBig[indexBig] != TFC_Core.getTypeForGravel(rock1.data1))
+//								{
+//									idsBig[indexBig] = TFC_Core.getTypeForDirt(rock1.data1);
+//									metaBig[indexBig] = (byte) TFC_Core.getSoilMeta(rock1.data1);
+//								}
+//							}
 						}
 					}
-					else if(idsTop[index] == TFCBlocks.saltWaterStationary && biome != TFCBiome.OCEAN && biome != TFCBiome.DEEP_OCEAN && biome != TFCBiome.BEACH && biome != TFCBiome.GRAVEL_BEACH)
-					{
-						idsBig[indexBig] = TFCBlocks.freshWaterStationary;
-					}
+//					else if(idsTop[index] == TFCBlocks.saltWaterStationary && biome != TFCBiome.OCEAN && biome != TFCBiome.DEEP_OCEAN && biome != TFCBiome.BEACH && biome != TFCBiome.GRAVEL_BEACH)
+//					{
+//						idsBig[indexBig] = TFCBlocks.freshWaterStationary;
+//					}
 				}
 			}
 		}
@@ -421,7 +439,7 @@ public class TFCChunkProviderHell extends TFCChunkProviderGenerate {
 				DataLayer rock2 = rockLayer2[arrayIndexDL];
 				DataLayer rock3 = rockLayer3[arrayIndexDL];
 				DataLayer stability = stabilityLayer[arrayIndexDL];
-				TFCBiome biome = (TFCBiome) getBiome(xCoord, zCoord);
+				TFCBiomeGenNother biome = (TFCBiomeGenNother) getBiome(xCoord, zCoord);
 
 				for (int height = 127; height >= 0; --height)
 				{
@@ -469,11 +487,11 @@ public class TFCChunkProviderHell extends TFCChunkProviderGenerate {
 		BlockCollapsible.fallInstantly = true;
 		int xCoord = chunkX * 16;
 		int zCoord = chunkZ * 16;
-		TFCBiome biome = null;
+		TFCBiomeGenNother biome = null;
 
 		if (this.worldObj.getBiomeGenForCoords(xCoord + 16, zCoord + 16) instanceof TFCBiome) // Fixes ClassCastException
 		{
-			biome = (TFCBiome) this.worldObj.getBiomeGenForCoords(xCoord + 16, zCoord + 16);
+			biome = (TFCBiomeGenNother) this.worldObj.getBiomeGenForCoords(xCoord + 16, zCoord + 16);
 		}
 
 		this.rand.setSeed(this.worldObj.getSeed());
@@ -516,6 +534,313 @@ public class TFCChunkProviderHell extends TFCChunkProviderGenerate {
 	private BiomeGenBase getBiome(int x, int z)
 	{
 		return this.biomesForGeneration[z + 1 + (x + 1) * 18];
+	}
+	
+	@Override
+	public void generateTerrainHigh(int chunkX, int chunkZ, Block[] idsTop)
+	{
+		byte subDivXZ = 4;
+		byte subDivY = 16;
+		int seaLevel = 16;
+		int xSize = subDivXZ + 1;
+		byte ySize = 17;
+		int zSize = subDivXZ + 1;
+		short arrayYHeight = 128;
+		this.biomesForGeneration = this.worldObj.getWorldChunkManager().getBiomesForGeneration(this.biomesForGeneration, chunkX * 4 - 2, chunkZ * 4 - 2, xSize + 5, zSize + 5);
+		this.noiseArray = this.initializeNoiseFieldHigh(this.noiseArray, chunkX * subDivXZ, 0, chunkZ * subDivXZ, xSize, ySize, zSize);
+
+		for (int x = 0; x < subDivXZ; ++x)
+		{
+			for (int z = 0; z < subDivXZ; ++z)
+			{
+				for (int y = 0; y < subDivY; ++y)
+				{
+					double yLerp = 0.125D;
+					double noiseDL = this.noiseArray[((x + 0) * zSize + z + 0) * ySize + y + 0];
+					double noiseUL = this.noiseArray[((x + 0) * zSize + z + 1) * ySize + y + 0];
+					double noiseDR = this.noiseArray[((x + 1) * zSize + z + 0) * ySize + y + 0];
+					double noiseUR = this.noiseArray[((x + 1) * zSize + z + 1) * ySize + y + 0];
+					double noiseDLA = (this.noiseArray[((x + 0) * zSize + z + 0) * ySize + y + 1] - noiseDL) * yLerp;
+					double noiseULA = (this.noiseArray[((x + 0) * zSize + z + 1) * ySize + y + 1] - noiseUL) * yLerp;
+					double noiseDRA = (this.noiseArray[((x + 1) * zSize + z + 0) * ySize + y + 1] - noiseDR) * yLerp;
+					double noiseURA = (this.noiseArray[((x + 1) * zSize + z + 1) * ySize + y + 1] - noiseUR) * yLerp;
+
+					for (int var31 = 0; var31 < 8; ++var31)
+					{
+						double xLerp = 0.25D;
+						double var34 = noiseDL;
+						double var36 = noiseUL;
+						double var38 = (noiseDR - noiseDL) * xLerp;
+						double var40 = (noiseUR - noiseUL) * xLerp;
+
+						for (int var42 = 0; var42 < 4; ++var42)
+						{
+							int index = var42 + x * 4 << 11 | 0 + z * 4 << 7 | y * 8 + var31;
+
+							index -= arrayYHeight;
+							double zLerp = 0.25D;
+							double var49 = (var36 - var34) * zLerp;
+							double var47 = var34 - var49;
+
+							for (int var51 = 0; var51 < 4; ++var51)
+							{
+								if ((var47 += var49) > 0.0D)
+									idsTop[index += arrayYHeight] = Blocks.stone;
+								else if (y * 8 + var31 < seaLevel)
+									idsTop[index += arrayYHeight] = TFCBlocks.saltWaterStationary;
+								else
+									idsTop[index += arrayYHeight] = Blocks.air;
+							}
+							var34 += var38;
+							var36 += var40;
+						}
+						noiseDL += noiseDLA;
+						noiseUL += noiseULA;
+						noiseDR += noiseDRA;
+						noiseUR += noiseURA;
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * generates a subset of the level's terrain data. Takes 7 arguments: the [empty] noise array, the position, and the
+	 * size.
+	 */
+
+	private double[] initializeNoiseFieldHigh(double[] outArray, int xPos, int yPos, int zPos, int xSize, int ySize, int zSize)
+	{
+		if (outArray == null)
+			outArray = new double[xSize * ySize * zSize];
+
+		if (this.parabolicField == null)
+		{
+			this.parabolicField = new float[25];
+			for (int counter1 = -2; counter1 <= 2; ++counter1)
+			{
+				for (int counter2 = -2; counter2 <= 2; ++counter2)
+				{
+					float parabolaHeight = 10.0F / MathHelper.sqrt_float(counter1 * counter1 + counter2 * counter2 + 0.2F);
+					this.parabolicField[counter1 + 2 + (counter2 + 2) * 5] = parabolaHeight;
+
+					// Results in the following plot: http://i.imgur.com/rxrui67.png
+				}
+			}
+		}
+
+		/*
+		 * Mojang Magic Numbers
+		 *               double var44 = 684.412D;
+		 *               double var45 = 684.412D;
+		 */
+
+		double double1 = 1000D;
+		double double2 = 1000D;
+		// double1 and double 2 are only used in these generateNoiseOctaves methods.
+
+		//this.noise5 = this.noiseGen5.generateNoiseOctaves(this.noise5, xPos, zPos, xSize, zSize, 1.121D, 1.121D, 0.5D);
+		this.noise6 = this.noiseGen6.generateNoiseOctaves(this.noise6, xPos, zPos, xSize, zSize, 200.0D, 200.0D, 0.5D);
+		this.noise3 = this.noiseGen3.generateNoiseOctaves(this.noise3, xPos, yPos, zPos, xSize, ySize, zSize, double1 / 80.0D, double2 / 160.0D, double1 / 80.0D);
+		//this.noise3 = this.noiseGen3.generateNoiseOctaves(this.noise3, xPos, yPos, zPos, xSize, ySize, zSize, var44 / 80.0D, 0.5, var44 / 80.0D);
+		this.noise1 = this.noiseGen1.generateNoiseOctaves(this.noise1, xPos, yPos, zPos, xSize, ySize, zSize, double1, double2, double1);
+		this.noise2 = this.noiseGen2.generateNoiseOctaves(this.noise2, xPos, yPos, zPos, xSize, ySize, zSize, double1, double2, double1);
+
+		int index1 = 0;
+		int index2 = 0;
+
+		for (int x = 0; x < xSize; ++x)
+		{
+			for (int z = 0; z < zSize; ++z)
+			{
+				float variationBlended = 0.0F;
+				float rootBlended = 0.0F;
+				float totalBlendedHeight = 0.0F;
+				byte radius = 2;
+				BiomeGenBase baseBiome = this.biomesForGeneration[x + 2 + (z + 2) * (xSize + 5)];
+
+				for (int xR = -radius; xR <= radius; ++xR)
+				{
+					for (int zR = -radius; zR <= radius; ++zR)
+					{
+						BiomeGenBase blendBiome = this.biomesForGeneration[x + xR + 2 + (z + zR + 2) * (xSize + 5)];
+						float blendedHeight = this.parabolicField[xR + 2 + (zR + 2) * 5] / 2.0F;
+						if (blendBiome.rootHeight > baseBiome.rootHeight)
+							blendedHeight *= 0.5F;
+
+						variationBlended += blendBiome.heightVariation * blendedHeight;
+						rootBlended += blendBiome.rootHeight * blendedHeight;
+						totalBlendedHeight += blendedHeight;
+					}
+				}
+
+				variationBlended /= totalBlendedHeight;
+				rootBlended /= totalBlendedHeight;
+				variationBlended = variationBlended * 0.9F + 0.1F;
+				rootBlended = (rootBlended * 4.0F - 1.0F) / 8.0F;
+
+				double scaledNoise6Value = this.noise6[index2] / 8000.0D;
+
+				if (scaledNoise6Value < 0.0D)
+					scaledNoise6Value = -scaledNoise6Value * 0.3D; //If negative, make positive and shrink by a third?
+
+							scaledNoise6Value = scaledNoise6Value * 3.0D - 2.0D;
+
+					if (scaledNoise6Value < 0.0D) // Only true when noise6[index2] is between -17,777 and 0, scaledNoise6Value will be at maximum -2
+					{
+						scaledNoise6Value /= 2.0D; // Results in values between 0 and -1
+						if (scaledNoise6Value < -1.0D) //Error Checking
+						scaledNoise6Value = -1.0D;
+					scaledNoise6Value /= 1.4D * 2.0D; // Results in values between 0 and -0.357143
+					}
+					else
+					{
+						if (scaledNoise6Value > 1.0D)
+							scaledNoise6Value = 1.0D;
+						scaledNoise6Value /= 8.0D; // Results in values between 0 and 0.125
+					}
+
+					++index2;
+
+					for (int y = 0; y < ySize; ++y)
+					{
+						double rootBlendedCopy = rootBlended;
+						rootBlendedCopy += scaledNoise6Value * 0.2D;
+						rootBlendedCopy = rootBlendedCopy * ySize / 16.0D;
+						double var28 = ySize / 2.0D + rootBlendedCopy * 4.0D;
+						double output = 0.0D;
+						double var32 = (y - var28) * 12.0D * 256.0D / 256.0D / (2.70 + variationBlended);
+
+						if (var32 < 0.0D)
+							var32 *= 4.0D;
+
+						double var34 = this.noise1[index1] / 512.0D;
+						double var36 = this.noise2[index1] / 512.0D;
+						double var38 = (this.noise3[index1] / 10.0D + 1.0D) / 2.0D;
+
+						if (var38 < 0.0D)
+							output = var34;
+						else if (var38 > 1.0D)
+							output = var36;
+						else
+							output = var34 + (var36 - var34) * var38;
+
+						output -= var32;
+						if (y > ySize - 4)
+						{
+							double var40 = (y - (ySize - 4)) / 3.0F;
+							output = output * (1.0D - var40) + -10.0D * var40;
+						}
+
+						outArray[index1] = output;
+						++index1;
+					}
+			}
+		}
+		return outArray;
+	}
+	public static List<SpawnListEntry> getCreatureSpawnsByChunk(World world, TFCBiomeGenNother biome, int x, int z)
+	{
+		List<SpawnListEntry> spawnableCreatureList = new ArrayList<SpawnListEntry>();
+		spawnableCreatureList.add(new SpawnListEntry(EntityChickenTFC.class, 24, 0, 0));
+		float temp = TFC_Climate.getBioTemperatureHeight(world, x, world.getTopSolidOrLiquidBlock(x, z), z);
+		float rain = TFC_Climate.getRainfall(world, x, 150, z);
+		float evt = 0.0f;
+		if (TFC_Climate.getCacheManager(world) != null && TFC_Climate.getCacheManager(world).getEVTLayerAt(x, z) != null)
+			evt = TFC_Climate.getCacheManager(world).getEVTLayerAt(x, z).floatdata1;
+		//boolean isMountainous = biome == TFCBiome.MOUNTAINS || biome == TFCBiome.HIGH_HILLS;
+		boolean isMountainous = false;
+		//To adjust animal spawning at higher altitudes
+		int mountainousAreaModifier = isMountainous? - 1 : 0;
+		if(isMountainous)
+		{
+			if(temp<25 && temp > -10)
+			{
+				spawnableCreatureList.add(new SpawnListEntry(EntitySheepTFC.class, 2, 2, 4));
+				if(rain >250 && evt < 0.75)
+				{
+					spawnableCreatureList.add(new SpawnListEntry(EntityWolfTFC.class, 2, 1, 3));
+					spawnableCreatureList.add(new SpawnListEntry(EntityBear.class, 1, 1, 1));
+				}
+			}
+		}
+		else //run of the mill plains, but not too cold
+			if(temp > 0 && rain > 100 && rain <= 500)
+			{
+				if(temp > 20)
+				{
+					//Pigs spawn on the warmer end of the spectrum
+					spawnableCreatureList.add(new SpawnListEntry(EntityPigTFC.class, 1, 1, 2));
+				}
+				if(temp < 30)
+				{
+					spawnableCreatureList.add(new SpawnListEntry(EntityCowTFC.class, 2, 2, 4));
+					spawnableCreatureList.add(new SpawnListEntry(EntityHorseTFC.class, 2, 2, 3));
+				}
+			}
+		//regular temperate forest
+		if(temp > 0 &&temp < 21 && rain > 250)
+		{
+			spawnableCreatureList.add(new SpawnListEntry(EntityPigTFC.class, 2 + mountainousAreaModifier, 2 + mountainousAreaModifier, 3 + mountainousAreaModifier));
+			spawnableCreatureList.add(new SpawnListEntry(EntityWolfTFC.class, 1, 1, 2 + mountainousAreaModifier));
+			spawnableCreatureList.add(new SpawnListEntry(EntityBear.class, 1, 1, 1));
+			spawnableCreatureList.add(new SpawnListEntry(EntityDeer.class, 2 + mountainousAreaModifier, 1, 3 + mountainousAreaModifier));
+			spawnableCreatureList.add(new SpawnListEntry(EntityPheasantTFC.class, 3 + mountainousAreaModifier, 1, 3));
+
+		}
+		//colder climate
+		if(temp > -20 && temp <=0)
+		{
+			//boreal forest
+			if(rain > 250)
+			{
+				spawnableCreatureList.add(new SpawnListEntry(EntityPigTFC.class, 1 + mountainousAreaModifier, 1, 2));
+				spawnableCreatureList.add(new SpawnListEntry(EntityWolfTFC.class, 2 + mountainousAreaModifier, 1, 2 + mountainousAreaModifier));
+				spawnableCreatureList.add(new SpawnListEntry(EntityBear.class, 2 + mountainousAreaModifier, 1, 1));
+				spawnableCreatureList.add(new SpawnListEntry(EntityDeer.class, 1 + mountainousAreaModifier, 2, 3));
+				spawnableCreatureList.add(new SpawnListEntry(EntityPheasantTFC.class, 1 + mountainousAreaModifier, 1, 2));
+				spawnableCreatureList.add(new SpawnListEntry(EntitySheepTFC.class, 2, 2, 4));
+			}
+			//closer to tundra or taiga
+			else if(rain >100)
+			{
+				spawnableCreatureList.add(new SpawnListEntry(EntityWolfTFC.class, 1 + mountainousAreaModifier, 1, 1));
+				spawnableCreatureList.add(new SpawnListEntry(EntityDeer.class, 1 + mountainousAreaModifier, 1, 1));
+			}
+		}
+		//Jungle
+		if(temp >= 23 && temp < 44 && rain > 1500)
+		{
+			spawnableCreatureList.add(new SpawnListEntry(EntityPigTFC.class, 2 + mountainousAreaModifier, 2 + mountainousAreaModifier, 4 + mountainousAreaModifier));
+			spawnableCreatureList.add(new SpawnListEntry(EntityChickenTFC.class, 3 + mountainousAreaModifier, 1, 4 + mountainousAreaModifier));
+		}
+		//Swamp
+		if(TFC_Climate.isSwamp(world, x,150,z))
+		{
+			spawnableCreatureList.add(new SpawnListEntry(EntityPigTFC.class, 1, 1, 2));
+			spawnableCreatureList.add(new SpawnListEntry(EntityPheasantTFC.class, 1 + mountainousAreaModifier, 1, 1));
+		}
+		return spawnableCreatureList;
+	}
+
+	public boolean canSnowAt(World world, int x, int y, int z)
+	{
+		float var5 = TFC_Climate.getHeightAdjustedTemp(world, x, y, z);
+		if (var5 >= 0F)
+		{
+			return false;
+		}
+		else
+		{
+			if (y >= 0 && y < 256 && world.getSavedLightValue(EnumSkyBlock.Block, x, y, z) < 10 && TFC_Time.getTotalMonths() > 1)
+			{
+				Block var6 = world.getBlock(x, y - 1, z);
+				Block var7 = world.getBlock(x, y, z);
+				if (var7.isAir(world, x, y, z) && TFCBlocks.snow.canPlaceBlockAt(world, x, y, z) && !var6.isAir(world, x, y - 1, z) && var6.getMaterial().blocksMovement())
+					return true;
+			}
+			return false;
+		}
 	}
 
 }

@@ -3,14 +3,13 @@
 //=======================================================
 package com.bioxx.tfc;
 
-import com.bioxx.tfc.WorldGen.Structure.MapGenFortressTFC;
-import net.minecraft.world.WorldType;
+import com.bioxx.tfc.WorldGen.Nother.TFCProviderNother;
+import com.bioxx.tfc.WorldGen.Nother.Structure.MapGenFortressTFC;
 
-import net.minecraft.world.gen.structure.MapGenStructureIO;
+import net.minecraft.world.WorldType;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.common.MinecraftForge;
-
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -32,17 +31,17 @@ import com.bioxx.tfc.Food.TFCPotion;
 import com.bioxx.tfc.Handlers.*;
 import com.bioxx.tfc.Handlers.Network.PacketPipeline;
 import com.bioxx.tfc.WorldGen.TFCProvider;
-import com.bioxx.tfc.WorldGen.TFCProviderHell;
 import com.bioxx.tfc.WorldGen.TFCWorldType;
 import com.bioxx.tfc.WorldGen.Generators.*;
 import com.bioxx.tfc.api.SkillsManager;
 import com.bioxx.tfc.api.TFCBlocks;
 import com.bioxx.tfc.api.TFCOptions;
 import com.bioxx.tfc.api.Constant.Global;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static com.bioxx.tfc.WorldGen.Structure.StructureFortressPieces.registerStructureFortressPieces;
+import static com.bioxx.tfc.WorldGen.Nother.Structure.StructureFortressPieces.registerStructureFortressPieces;
 import static net.minecraft.world.gen.structure.MapGenStructureIO.registerStructure;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION, dependencies = Reference.MOD_DEPENDENCIES, guiFactory = Reference.GUI_FACTORY)
@@ -133,15 +132,15 @@ public class TerraFirmaCraft
 		DimensionManager.unregisterProviderType(-1);
 		DimensionManager.unregisterProviderType(0);
 		DimensionManager.unregisterProviderType(1);
-		DimensionManager.registerProviderType(-1, TFCProviderHell.class, false);
+		DimensionManager.registerProviderType(-1, TFCProviderNother.class, false);
 		DimensionManager.registerProviderType(0, TFCProvider.class, true);
 		DimensionManager.registerProviderType(1, TFCProvider.class, false);
-		DimensionManager.registerProviderType(2, TFCProviderHell.class, false);
+		//DimensionManager.registerProviderType(2, TFCProviderNother.class, false);
 		
 		DimensionManager.registerDimension(-1, -1);
 		DimensionManager.registerDimension(0, 0);
 		DimensionManager.registerDimension(1, 1);
-		DimensionManager.registerDimension(2, 2);
+		//DimensionManager.registerDimension(2, 2);
 	}
 
 	@EventHandler

@@ -1,10 +1,14 @@
-package com.bioxx.tfc.WorldGen.Structure;
+package com.bioxx.tfc.WorldGen.Nother.Structure;
 
 import com.bioxx.tfc.Reference;
+import com.bioxx.tfc.TileEntities.TEChest;
 import com.bioxx.tfc.api.TFCBlocks;
+import com.bioxx.tfc.api.TFCItems;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
@@ -179,6 +183,8 @@ public class StructureFortressPieces {
                 if (p_74875_3_.isVecInside(j, i, k))
                 {
                     this.field_111021_b = false;
+                    
+                    
                     this.generateStructureChestContents(p_74875_1_, p_74875_3_, p_74875_2_, 3, 2, 3, field_111019_a, 2 + p_74875_2_.nextInt(4));
                 }
             }
@@ -271,6 +277,7 @@ public class StructureFortressPieces {
                 if (p_74875_3_.isVecInside(j, i, k))
                 {
                     this.field_111020_b = false;
+                    
                     this.generateStructureChestContents(p_74875_1_, p_74875_3_, p_74875_2_, 1, 2, 3, field_111019_a, 2 + p_74875_2_.nextInt(4));
                 }
             }
@@ -930,7 +937,7 @@ public class StructureFortressPieces {
             this.fillWithMetadataBlocks(p_74875_1_, p_74875_3_, 5, 5, 5, 7, 5, 7, TFCBlocks.stoneIgExSmooth, 2, TFCBlocks.stoneIgExSmooth, 2, false);
             this.fillWithBlocks(p_74875_1_, p_74875_3_, 6, 1, 6, 6, 4, 6, Blocks.air, Blocks.air, false);
             this.placeBlockAtCurrentPosition(p_74875_1_, TFCBlocks.stoneIgExSmooth, 0, 6, 0, 6, p_74875_3_);
-            this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.flowing_lava, 0, 6, 5, 6, p_74875_3_);
+            this.placeBlockAtCurrentPosition(p_74875_1_, TFCBlocks.lava, 0, 6, 5, 6, p_74875_3_);
             i = this.getXWithOffset(6, 6);
             j = this.getYWithOffset(5);
             int k = this.getZWithOffset(6, 6);
@@ -938,7 +945,7 @@ public class StructureFortressPieces {
             if (p_74875_3_.isVecInside(i, j, k))
             {
                 p_74875_1_.scheduledUpdatesAreImmediate = true;
-                Blocks.flowing_lava.updateTick(p_74875_1_, i, j, k, p_74875_2_);
+                TFCBlocks.lava.updateTick(p_74875_1_, i, j, k, p_74875_2_);
                 p_74875_1_.scheduledUpdatesAreImmediate = false;
             }
 
@@ -1079,10 +1086,10 @@ public class StructureFortressPieces {
             this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.nether_brick_stairs, j, 8, 5, 3, p_74875_3_);
             this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.nether_brick_stairs, j, 8, 5, 9, p_74875_3_);
             this.placeBlockAtCurrentPosition(p_74875_1_, Blocks.nether_brick_stairs, j, 8, 5, 10, p_74875_3_);
-            this.fillWithBlocks(p_74875_1_, p_74875_3_, 3, 4, 4, 4, 4, 8, Blocks.soul_sand, Blocks.soul_sand, false);
-            this.fillWithBlocks(p_74875_1_, p_74875_3_, 8, 4, 4, 9, 4, 8, Blocks.soul_sand, Blocks.soul_sand, false);
-            this.fillWithBlocks(p_74875_1_, p_74875_3_, 3, 5, 4, 4, 5, 8, Blocks.nether_wart, Blocks.nether_wart, false);
-            this.fillWithBlocks(p_74875_1_, p_74875_3_, 8, 5, 4, 9, 5, 8, Blocks.nether_wart, Blocks.nether_wart, false);
+            this.fillWithMetadataBlocks(p_74875_1_, p_74875_3_, 3, 4, 4, 4, 4, 8, TFCBlocks.grass, 2, TFCBlocks.grass, 2, false);
+            this.fillWithMetadataBlocks(p_74875_1_, p_74875_3_, 3, 4, 4, 4, 4, 8, TFCBlocks.grass, 2, TFCBlocks.grass, 2, false);
+            this.fillWithBlocks(p_74875_1_, p_74875_3_, 3, 5, 4, 4, 5, 8, Blocks.pumpkin, Blocks.pumpkin, false);
+            this.fillWithBlocks(p_74875_1_, p_74875_3_, 8, 5, 4, 9, 5, 8, Blocks.pumpkin, Blocks.pumpkin, false);
             this.fillWithMetadataBlocks(p_74875_1_, p_74875_3_, 4, 2, 0, 8, 2, 12, TFCBlocks.stoneIgExSmooth, 2, TFCBlocks.stoneIgExSmooth, 2, false);
             this.fillWithMetadataBlocks(p_74875_1_, p_74875_3_, 0, 2, 4, 12, 2, 8, TFCBlocks.stoneIgExSmooth, 2, TFCBlocks.stoneIgExSmooth, 2, false);
             this.fillWithMetadataBlocks(p_74875_1_, p_74875_3_, 4, 0, 0, 8, 1, 3, TFCBlocks.stoneIgExSmooth, 2, TFCBlocks.stoneIgExSmooth, 2, false);
@@ -1115,7 +1122,7 @@ public class StructureFortressPieces {
 
     abstract static class Piece extends StructureComponent
     {
-        protected static final WeightedRandomChestContent[] field_111019_a = new WeightedRandomChestContent[] {new WeightedRandomChestContent(Items.diamond, 0, 1, 3, 5), new WeightedRandomChestContent(Items.iron_ingot, 0, 1, 5, 5), new WeightedRandomChestContent(Items.gold_ingot, 0, 1, 3, 15), new WeightedRandomChestContent(Items.golden_sword, 0, 1, 1, 5), new WeightedRandomChestContent(Items.golden_chestplate, 0, 1, 1, 5), new WeightedRandomChestContent(Items.flint_and_steel, 0, 1, 1, 5), new WeightedRandomChestContent(Items.nether_wart, 0, 3, 7, 5), new WeightedRandomChestContent(Items.saddle, 0, 1, 1, 10), new WeightedRandomChestContent(Items.golden_horse_armor, 0, 1, 1, 8), new WeightedRandomChestContent(Items.iron_horse_armor, 0, 1, 1, 5), new WeightedRandomChestContent(Items.diamond_horse_armor, 0, 1, 1, 3)};
+        protected static final WeightedRandomChestContent[] field_111019_a = new WeightedRandomChestContent[] {new WeightedRandomChestContent(TFCItems.proPickSteel, 0, 1, 3, 5), new WeightedRandomChestContent(TFCItems.seedsJute, 0, 1, 5, 5), new WeightedRandomChestContent(TFCItems.silverIngot2x, 0, 1, 3, 15), new WeightedRandomChestContent(TFCItems.wroughtIronAxe, 0, 1, 1, 5), new WeightedRandomChestContent(TFCItems.steelSword, 0, 1, 1, 5), new WeightedRandomChestContent(TFCItems.flintSteel, 0, 1, 1, 5), new WeightedRandomChestContent(TFCItems.leatherLeggings, 0, 3, 7, 5), new WeightedRandomChestContent(TFCItems.steelSheet, 0, 1, 1, 10), new WeightedRandomChestContent(TFCItems.pigIronIngot, 0, 1, 1, 8), new WeightedRandomChestContent(TFCItems.blackBronzeIngot, 0, 1, 1, 5), new WeightedRandomChestContent(TFCItems.fireBrick, 0, 1, 1, 3)};
 
 
         public Piece() {}
@@ -1289,6 +1296,34 @@ public class StructureFortressPieces {
         protected static boolean isAboveGround(StructureBoundingBox p_74964_0_)
         {
             return p_74964_0_ != null && p_74964_0_.minY > 10;
+        }
+       
+        /**
+         * Used to generate chests with items in it. ex: Temple Chests, Village Blacksmith Chests, Mineshaft Chests.
+         */
+        @Override
+        protected boolean generateStructureChestContents(World p_74879_1_, StructureBoundingBox p_74879_2_, Random p_74879_3_, int p_74879_4_, int p_74879_5_, int p_74879_6_, WeightedRandomChestContent[] p_74879_7_, int p_74879_8_)
+        {
+            int i1 = this.getXWithOffset(p_74879_4_, p_74879_6_);
+            int j1 = this.getYWithOffset(p_74879_5_);
+            int k1 = this.getZWithOffset(p_74879_4_, p_74879_6_);
+
+            if (p_74879_2_.isVecInside(i1, j1, k1) && p_74879_1_.getBlock(i1, j1, k1) != TFCBlocks.chest)
+            {
+                p_74879_1_.setBlock(i1, j1, k1, TFCBlocks.chest, 0, 2);
+                TEChest tileentitychest = (TEChest)p_74879_1_.getTileEntity(i1, j1, k1);
+
+                if (tileentitychest != null)
+                {
+                    WeightedRandomChestContent.generateChestContents(p_74879_3_, p_74879_7_, tileentitychest, p_74879_8_);
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 
@@ -1597,7 +1632,7 @@ public class StructureFortressPieces {
 
                     if (tileentitymobspawner != null)
                     {
-                        tileentitymobspawner.func_145881_a().setEntityName("Blaze");
+                        tileentitymobspawner.func_145881_a().setEntityName("blazeTFC");
                     }
                 }
             }
@@ -1613,4 +1648,5 @@ public class StructureFortressPieces {
             return true;
         }
     }
+    
 }

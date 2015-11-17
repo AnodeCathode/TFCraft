@@ -20,7 +20,6 @@ public class TFCWorldType extends WorldType
 		TFCBiome.OCEAN
 	};
 	private static final TFCBiome[] BIOMES_FLAT = new TFCBiome[] {
-		TFCBiome.HELL,
 		TFCBiome.OCEAN,
 		TFCBiome.HIGH_HILLS,
 		TFCBiome.PLAINS,
@@ -67,7 +66,7 @@ public class TFCWorldType extends WorldType
 		{
 			//			FlatGeneratorInfo var1 = FlatGeneratorInfo.createFlatGeneratorFromString(world.getWorldInfo().getGeneratorOptions());
 			//			return new TFCWorldChunkManagerHell(BiomeGenBase.getBiome(var1.getBiome()), 0.5F, 0.5F);
-			return new TFCWorldChunkManagerHell(TFCBiome.HELL, 0.5F, 0.5F, world);
+			return new TFCWorldChunkManager(world);
 		}
 		else
 		{
