@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 public class EntityLargeFireballTFC extends EntityLargeFireball
 {
-    public int field_92057_e = 1;
+    public int field_92057_e = 3;
 
 
     public EntityLargeFireballTFC(World p_i1767_1_)
