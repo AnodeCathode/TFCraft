@@ -26,7 +26,7 @@ public class MapGenFortressTFC extends MapGenStructure {
     public MapGenFortressTFC()
     {
 
-        this.spawnList.add(new SpawnListEntry(EntityBlazeTFC.class, 10, 2, 3));
+        this.spawnList.add(new SpawnListEntry(EntityBlazeTFC.class, 7, 2, 3));
         this.spawnList.add(new SpawnListEntry(EntityPigZombieTFC.class, 5, 4, 4));
         this.spawnList.add(new SpawnListEntry(EntitySkeletonTFC.class, 10, 4, 4));
 
