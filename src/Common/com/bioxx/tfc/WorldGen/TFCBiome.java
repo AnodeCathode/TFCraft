@@ -38,7 +38,7 @@ public class TFCBiome extends BiomeGenBase
 	public static final TFCBiome HIGH_PLAINS = new TFCBiome(35).setBiomeName("High Plains").setMinMaxHeight(0.4F, 0.43F).setBiomeColor(0xa6a41c);
 	public static final TFCBiome DEEP_OCEAN = new TFCBiome(36).setBiomeName("Deep Ocean").setMinMaxHeight(-1.5F, 0.00001F).setBiomeColor(0x0e055a);
 	public static final TFCBiome LAKE = new TFCBiome(2).setBiomeName("Lake").setMinMaxHeight(-0.5F, 0.001F).setBiomeColor(0x4a8e9e).setLilyPads(2);
-	public static final TFCBiome NOTHER = new TFCBiomeGenHell(9).setColor(16711680).setBiomeName("Nother").setDisableRain().setTemperatureRainfall(2.0F, 0.0F).setMinMaxHeight(0.8F, 1.6F);
+	public static final TFCBiome NOTHER = new TFCBiomeGenHell(9).setColor(16711680).setBiomeName("Nother").setDisableRain().setTemperatureRainfall(2.0F, 0.0F).setMinMaxHeight(0.8F, 1.6F).setBiomeColor(0x1f392b);
 	
 	protected static WorldGenAcaciaKoaTrees worldGenAcaciaKoaTrees;
 	protected static WorldGenCustomTallTrees worldGenAshTallTrees;

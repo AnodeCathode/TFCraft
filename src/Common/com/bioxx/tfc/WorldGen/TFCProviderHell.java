@@ -30,8 +30,8 @@ public class TFCProviderHell extends TFCProvider
 		 */
 		TFC_Climate.worldPair.put(worldObj, new WorldCacheManager(worldObj));
 		TFC_Core.addCDM(worldObj);
-		this.worldChunkMgr = new TFCWorldChunkManagerHell(TFCBiome.HELL, 0.0F, 0, worldObj);
-        this.dimensionId = 2;
+		this.worldChunkMgr = new TFCWorldChunkManagerHell(TFCBiome.NOTHER, 0.0F, 0, worldObj);
+        this.dimensionId = -1;
         this.hasNoSky = true;
 		
 	}
