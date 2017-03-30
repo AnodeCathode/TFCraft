@@ -52,7 +52,7 @@ public class WorldGenSoilPits implements IWorldGenerator
 		byte var7 = 2;
 		boolean flag = false;
 
-		if(random.nextInt(50) == 0 && yCoord <= Global.SEALEVEL)
+		if(random.nextInt(20) == 0 && yCoord <= Global.SEALEVEL)
 		{
 			for (int x = xCoord - var6; x <= xCoord + var6; ++x)
 			{
